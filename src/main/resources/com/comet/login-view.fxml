@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.comet.controller.LoginController">
+    <VBox alignment="CENTER" spacing="12.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+          AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0">
+        <Label text="🌠 Welcome to Comet Messenger 🌠" style="-fx-font-size: 18;"/>
+        <TextField fx:id="usernameField" promptText="Username" maxWidth="200"/>
+        <PasswordField fx:id="passwordField" promptText="Password" maxWidth="200"/>
+        <Button fx:id="loginButton" text="Login"/>
+        <Button fx:id="signupRedirectButton" text="Sign Up" />
+    </VBox>
+</AnchorPane>
