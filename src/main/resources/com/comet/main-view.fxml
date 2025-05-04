@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.comet.controller.ChatController">
+    <top>
+        <HBox alignment="CENTER">
+            <Label text="Welcome to Comet Chat!" />
+        </HBox>
+    </top>
+    <center>
+        <TextArea fx:id="chatArea" editable="false" wrapText="true" />
+    </center>
+    <bottom>
+        <HBox>
+            <TextField fx:id="messageField" HBox.hgrow="ALWAYS" />
+            <Button text="Send" onAction="#handleSend" />
+        </HBox>
+    </bottom>
+</BorderPane>

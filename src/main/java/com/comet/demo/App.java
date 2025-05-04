@@ -36,7 +36,12 @@ public class App extends Application {
     }
 
     public static void showChatScreen() {
-        // TODO later: after successful login
+        try {
+            FXMLLoader loader = new  FXMLLoader(App.class.getResource("/com/comet/main-view.fxml"));
+            primaryStage.setScene(new Scene(loader.load(), 400, 400));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

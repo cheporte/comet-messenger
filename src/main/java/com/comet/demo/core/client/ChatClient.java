@@ -1,72 +1,75 @@
 package com.comet.demo.core.client;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
-import java.util.Scanner;
+import java.util.function.Consumer;
 
 public class ChatClient {
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
-    private Scanner scanner;
+    private Thread listenerThread;
 
-    public void start(String serverAddress, int serverPort) {
-        try{
+    private final String serverAddress;
+    private final int serverPort;
+    private final String username;
+    private final Consumer<String> messageHandler; // Callback for GUI
+
+    public ChatClient(String serverAddress, int serverPort, String username, Consumer<String> messageHandler) {
+        this.serverAddress = serverAddress;
+        this.serverPort = serverPort;
+        this.username = username;
+        this.messageHandler = messageHandler;
+    }
+
+    public void start() {
+        try {
             socket = new Socket(serverAddress, serverPort);
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            scanner = new Scanner(System.in);
 
-            System.out.println("✨ Connected to the chat server! Type your name:");
-            Scanner console = new Scanner(System.in);
-            String username = console.nextLine();
+            // Send username first
             out.println(username);
 
-            // Reader thread
-            new Thread(() -> {
-                String response;
-                try {
-                    while ((response = in.readLine()) != null) {
-                        System.out.println("[🛸 Server]: " + response);
-                    }
-                } catch (IOException e) {
-                    System.out.println("💔 Server connection closed.");
-                }
-            }).start();
+            // Start listener thread
+            listenerThread = new Thread(this::listenForMessages);
+            listenerThread.setDaemon(true);
+            listenerThread.start();
 
-            // Writer thread
-            String message;
-            while (scanner.hasNextLine()) {
-                message = scanner.nextLine();
-                if (message.equalsIgnoreCase("/quit")) {
-                    closeEverything();
-                    break;
-                }
-                out.println(message);
-            }
+            messageHandler.accept("✅ Connected as " + username);
 
         } catch (IOException e) {
-            System.err.println("[Server] Error connecting to the server: " + e.getMessage());
+            messageHandler.accept("❌ Failed to connect: " + e.getMessage());
         }
     }
 
-    private void closeEverything() {
+    private void listenForMessages() {
+        try {
+            String msg;
+            while ((msg = in.readLine()) != null) {
+                messageHandler.accept(msg);
+            }
+        } catch (IOException e) {
+            messageHandler.accept("⚠️ Connection lost.");
+        } finally {
+            close();
+        }
+    }
+
+    public void sendMessage(String msg) {
+        if (out != null) {
+            out.println(msg);
+        }
+    }
+
+    public void close() {
         try {
             if (out != null) out.close();
             if (in != null) in.close();
             if (socket != null) socket.close();
-            if (scanner != null) scanner.close();
-            System.out.println("[<UNK> Server] closed the chat server.");
+            if (listenerThread != null) listenerThread.interrupt();
         } catch (IOException e) {
-            System.err.println("[Server] Error closing connection: " + e.getMessage());
+            messageHandler.accept("❌ Error closing connection: " + e.getMessage());
         }
-    }
-
-    public static void main(String[] args) {
-        ChatClient chatClient = new ChatClient();
-        chatClient.start("localhost", 12345);
     }
 }

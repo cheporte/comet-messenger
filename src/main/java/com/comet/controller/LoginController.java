@@ -1,5 +1,6 @@
 package com.comet.controller;
 
+import com.comet.db.DatabaseManager;
 import com.comet.demo.App;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,12 +29,21 @@ public class LoginController {
     }
 
     private void handleLogin(ActionEvent event) {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
-        // 🔥 TODO: Verify login from DB
-        System.out.println("Trying login with " + username);
-        // If login successful:
-        App.showChatScreen();
+        String username = usernameField.getText().trim();
+        String password = passwordField.getText().trim();
+
+        if (username.isEmpty() || password.isEmpty()) {
+            System.out.println("Username or password is empty");
+            return;
+        }
+
+        boolean success = DatabaseManager.getInstance().checkLogin(username, password);
+        if (success) {
+            System.out.println("Login successful");
+            App.showChatScreen();
+        } else {
+            System.out.println("Login failed");
+        }
     }
 
     private void handleSignupRedirect(ActionEvent event) {

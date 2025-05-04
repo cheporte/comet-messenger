@@ -1,5 +1,6 @@
 package com.comet.controller;
 
+import com.comet.db.DatabaseManager;
 import com.comet.demo.App;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,12 +29,21 @@ public class SignupController {
     }
 
     private void handleSignup(ActionEvent event) {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
-        // 🔥 TODO: Save user to DB
-        System.out.println("Creating user " + username);
-        // After signup:
-        App.showLoginScreen();
+        String username = usernameField.getText().trim();
+        String password = passwordField.getText().trim();
+
+        if (username.isEmpty() || password.isEmpty()) {
+            System.out.println("Please fill out all the fields");
+            return;
+        }
+
+        boolean success = DatabaseManager.getInstance().createUser(username, password);
+        if (success) {
+            System.out.println("User created successfully");
+            App.showChatScreen();
+        } else {
+            System.out.println("User creation failed");
+        }
     }
 
     private void handleLoginRedirect(ActionEvent event) {
