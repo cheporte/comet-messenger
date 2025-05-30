@@ -3,18 +3,33 @@
 <?import javafx.scene.control.*?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.comet.controller.ChatController">
-    <top>
-        <HBox alignment="CENTER">
-            <Label text="Welcome to Comet Chat!" />
-        </HBox>
-    </top>
+    <left>
+        <VBox spacing="10">
+            <TextField fx:id="searchField" promptText="Search contacts..." />
+            <Button text="Search" onAction="#handleSearch" />
+            <ListView fx:id="contactsList" VBox.vgrow="ALWAYS" />
+            <HBox spacing="10">
+                <Button text="Add Contact" onAction="#handleAddContact" />
+                <Button text="Remove Contact" onAction="#handleRemoveContact" />
+            </HBox>
+        </VBox>
+    </left>
     <center>
-        <TextArea fx:id="chatArea" editable="false" wrapText="true" styleClass="text-field"/>
+        <BorderPane>
+            <top>
+                <HBox alignment="CENTER">
+                    <Label fx:id="chatTitle" text="Welcome to Comet Chat!" />
+                </HBox>
+            </top>
+            <center>
+                <TextArea fx:id="chatArea" editable="false" wrapText="true" styleClass="text-field"/>
+            </center>
+            <bottom>
+                <HBox>
+                    <TextField fx:id="messageField" HBox.hgrow="ALWAYS" styleClass="text-field"/>
+                    <Button text="Send" onAction="#handleSend" styleClass="button"/>
+                </HBox>
+            </bottom>
+        </BorderPane>
     </center>
-    <bottom>
-        <HBox>
-            <TextField fx:id="messageField" HBox.hgrow="ALWAYS" styleClass="text-field"/>
-            <Button text="Send" onAction="#handleSend" styleClass="button"/>
-        </HBox>
-    </bottom>
 </BorderPane>

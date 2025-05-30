@@ -22,7 +22,7 @@ public class ChatClient {
             int serverPort,
             String username,
             String password,
-            Consumer<String> messageHandler
+            int currentChatId, Consumer<String> messageHandler
     ) {
         this.serverAddress = serverAddress;
         this.serverPort = serverPort;

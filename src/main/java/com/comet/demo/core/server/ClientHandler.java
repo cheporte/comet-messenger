@@ -14,70 +14,175 @@ public class ClientHandler implements Runnable {
     private final PrintWriter output;
     private final Scanner input;
     private String username;
+    private final DatabaseManager dbManager;
+    private String currentChatId;
 
-    public ClientHandler(Socket clientSocket, List<ClientHandler> clientHandlers) throws IOException {
+    public ClientHandler(
+            Socket clientSocket,
+            List<ClientHandler> clientHandlers,
+            String currentChatId
+    ) throws IOException {
         this.clientSocket = clientSocket;
         this.clientHandlers = clientHandlers;
         this.output = new PrintWriter(this.clientSocket.getOutputStream(), true);
         this.input = new Scanner(this.clientSocket.getInputStream());
+        this.dbManager = DatabaseManager.getInstance();
+        this.currentChatId = currentChatId;
     }
 
     @Override
     public void run() {
         try {
-            // Step 1: Receive credentials from client (2 lines: username + password)
-            String username = input.nextLine();
-            String password = input.nextLine();
-
-            // Step 2: Validate user in DB
-            boolean loggedIn = DatabaseManager.getInstance().checkLogin(username, password);
-
-            if (!loggedIn) {
-                output.println("[Server] ❌ Authentication failed. Closing connection.");
-                clientSocket.close();
-                return; // stop here for bad login
+            // Step 1: Authentication
+            if (!authenticateUser()) {
+                return;
             }
 
-            // Step 3: User is legit, add handler & announce
-            this.username = username;
-
+            // Step 2: User is authenticated, add to active clients
             synchronized (clientHandlers) {
-                if (!clientHandlers.contains(this)) {
-                    clientHandlers.add(this);
-                }
+                clientHandlers.add(this);
             }
 
-            broadcastMessage("[Server] " + username + " has joined the chat 🎉", false);
+            // Step 3: Send chat history
+            sendChatHistory();
 
-            // Step 4: Listen for messages and broadcast them
-            while (input.hasNextLine()) {
-                String message = input.nextLine();
-                broadcastMessage(username + ": " + message, true);
-                System.out.println("Message sent: [" + username + ": " + message + "]");
-            }
+            // Step 4: Notify others of new user
+            broadcastSystemMessage(username + " has joined the chat 🎉");
+
+            // Step 5: Main message loop
+            handleMessageLoop();
 
         } catch (Exception e) {
-            System.err.println("Client disconnected: " + e.getMessage());
+            System.err.println("ClientHandler error for " + username + ": " + e.getMessage());
         } finally {
-            try {
-                synchronized (clientHandlers) {
-                    if (!clientHandlers.contains(this)) {
-                        clientHandlers.remove(this);
-                    }
-                }
+            cleanup();
+        }
+    }
+
+    private boolean authenticateUser() {
+        try {
+            // Get credentials
+            username = input.nextLine();
+            String password = input.nextLine();
+
+            // Validate credentials
+            if (!dbManager.checkLogin(username, password)) {
+                output.println("[Server] Authentication failed. Closing connection.");
                 clientSocket.close();
-                broadcastMessage("[Server] " + username + " has left the chat 💔", false);
-            } catch (Exception ignored) {
+                return false;
+            }
+
+            return true;
+        } catch (IOException e) {
+            System.err.println("Authentication error: " + e.getMessage());
+        }
+        return false;
+    }
+
+    private void sendChatHistory() {
+        try {
+            // Get chat history from database
+            List<String> chatHistory = dbManager.getMessagesForChat(Integer.parseInt(currentChatId));
+
+            // Send history line by line to avoid overwhelming client
+            for (String message : chatHistory) {
+                output.println(message);
+            }
+        } catch (NumberFormatException e) {
+            System.err.println("Invalid chat ID format: " + currentChatId);
+        }
+    }
+
+    private void handleMessageLoop() {
+        while (input.hasNextLine()) {
+            String message = input.nextLine();
+
+            // Handle special commands
+            if (message.startsWith("/")) {
+                handleCommand(message);
+                continue;
+            }
+
+            // Broadcast regular message
+            broadcastUserMessage(message);
+
+            // Save to database
+            saveMessageToDatabase(message);
+        }
+    }
+
+    private void handleCommand(String command) {
+        if (command.equals("/contacts")) {
+            List<String> contacts = dbManager.getContacts(username);
+            output.println("[Server] Your contacts:");
+            for (String contact : contacts) {
+                output.println("- " + contact);
+            }
+        }
+        // Add more command handlers as needed
+    }
+
+    private void broadcastUserMessage(String message) {
+        String formattedMessage = username + ": " + message;
+        synchronized (clientHandlers) {
+            for (ClientHandler handler : clientHandlers) {
+                if (handler.currentChatId.equals(this.currentChatId)) {
+                    handler.output.println(formattedMessage);
+                }
+            }
+        }
+        System.out.println("Message in chat " + currentChatId + ": " + formattedMessage);
+    }
+
+    private void broadcastSystemMessage(String message) {
+        String formattedMessage = "[Server] " + message;
+        synchronized (clientHandlers) {
+            for (ClientHandler handler : clientHandlers) {
+                if (handler.currentChatId.equals(this.currentChatId)) {
+                    handler.output.println(formattedMessage);
+                }
             }
         }
     }
 
-    private void broadcastMessage(String message, boolean includeSelf) {
-        synchronized (clientHandlers) {
-            for (ClientHandler handler : clientHandlers) {
-                if (!includeSelf && handler == this) continue;
-                handler.output.println(message);
-            }
+    private void saveMessageToDatabase(String message) {
+        try {
+            dbManager.sendMessage(username, getCurrentChatRecipient(), message);
+        } catch (Exception e) {
+            System.err.println("Failed to save message to DB: " + e.getMessage());
         }
+    }
+
+    private String getCurrentChatRecipient() {
+        // This needs proper implementation based on your chat logic
+        // For now, returns the first contact (demo purposes)
+        List<String> contacts = dbManager.getContacts(username);
+        return contacts.isEmpty() ? null : contacts.get(0);
+    }
+
+    private void cleanup() {
+        try {
+            synchronized (clientHandlers) {
+                clientHandlers.remove(this);
+            }
+            if (username != null) {
+                broadcastSystemMessage(username + " has left the chat 💔");
+            }
+            clientSocket.close();
+        } catch (IOException e) {
+            System.err.println("Error during cleanup: " + e.getMessage());
+        }
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getCurrentChatId() {
+        return currentChatId;
+    }
+
+    public void setCurrentChatId(String chatId) {
+        this.currentChatId = chatId;
     }
 }

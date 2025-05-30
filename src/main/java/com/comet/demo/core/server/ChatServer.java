@@ -1,17 +1,15 @@
 package com.comet.demo.core.server;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ChatServer {
     private ServerSocket serverSocket;
-    private static final List<ClientHandler> clientHandlers = new ArrayList<>();
+    private final Map<Integer, List<ClientHandler>> chatRooms = new HashMap<>();
 
-    private void start(int port) {
+    public void start(int port) {
         try {
             serverSocket = new ServerSocket(port);
             System.out.println("[Server] Listening on port " + port + "...");
@@ -20,17 +18,19 @@ public class ChatServer {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("[Server] New client connected: " + clientSocket.getInetAddress().getHostAddress());
 
-                ClientHandler handler = new ClientHandler(clientSocket, clientHandlers);
+                // Assume the first message from the client is the chat ID they want to join
+                String currentChatId = new Scanner(clientSocket.getInputStream()).nextLine();
 
-                synchronized (clientHandlers) {
-                    if (!clientHandlers.contains(handler)) {
-                        clientHandlers.add(handler);
+                ClientHandler handler = new ClientHandler(clientSocket, chatRooms.computeIfAbsent(Integer.valueOf(currentChatId), k -> new ArrayList<>()), currentChatId);
+
+                synchronized (chatRooms.get(currentChatId)) {
+                    if (!chatRooms.get(currentChatId).contains(handler)) {
+                        chatRooms.get(currentChatId).add(handler);
                     }
                 }
 
                 new Thread(handler).start();
             }
-
         } catch (IOException e) {
             System.err.println("[Server] Error: " + e.getMessage());
         }
