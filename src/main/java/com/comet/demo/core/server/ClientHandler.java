@@ -42,7 +42,9 @@ public class ClientHandler implements Runnable {
             this.username = username;
 
             synchronized (clientHandlers) {
-                clientHandlers.add(this);
+                if (!clientHandlers.contains(this)) {
+                    clientHandlers.add(this);
+                }
             }
 
             broadcastMessage("[Server] " + username + " has joined the chat 🎉", false);
@@ -59,7 +61,9 @@ public class ClientHandler implements Runnable {
         } finally {
             try {
                 synchronized (clientHandlers) {
-                    clientHandlers.remove(this);
+                    if (!clientHandlers.contains(this)) {
+                        clientHandlers.remove(this);
+                    }
                 }
                 clientSocket.close();
                 broadcastMessage("[Server] " + username + " has left the chat 💔", false);

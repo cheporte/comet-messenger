@@ -23,7 +23,9 @@ public class ChatServer {
                 ClientHandler handler = new ClientHandler(clientSocket, clientHandlers);
 
                 synchronized (clientHandlers) {
-                    clientHandlers.add(handler);
+                    if (!clientHandlers.contains(handler)) {
+                        clientHandlers.add(handler);
+                    }
                 }
 
                 new Thread(handler).start();

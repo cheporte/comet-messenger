@@ -37,13 +37,15 @@ public class ChatController {
     private void handleSend() {
         String message = messageField.getText().trim();
         if (!message.isEmpty()) {
-            chatArea.appendText("You: " + message + "\n");
             chatClient.sendMessage(message);
             messageField.clear();
         }
     }
 
     private void onMessageReceived(String message) {
-        Platform.runLater(() -> chatArea.appendText(message + "\n"));
+        Platform.runLater(() -> {
+            chatArea.appendText(message + "\n");
+            chatArea.setScrollTop(Double.MAX_VALUE);
+        });
     }
 }
