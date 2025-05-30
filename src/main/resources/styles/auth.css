@@ -11,19 +11,6 @@
     -fx-padding: 10;
 }
 
-
-.chat-field {
-    -fx-background-color: rgba(10, 14, 42, 0.7); /* Slightly transparent dark blue */
-    -fx-text-fill: #ffffff; /* White text */
-    -fx-border-color: #7a8bc7; /* Light blue border */
-    -fx-border-radius: 6;
-    -fx-padding: 5 10;
-}
-
-.chat-field .content {
-    -fx-background-color: rgba(10, 14, 42, 0.7);
-}
-
 .text-field {
     -fx-background-color: rgba(10, 14, 42, 0.7); /* Slightly transparent dark blue */
     -fx-text-fill: #ffffff; /* White text */
@@ -42,4 +29,8 @@
 
 .button:hover {
     -fx-background-color: #303f9f; /* Slightly lighter blue on hover */
+}
+
+.welcome-label {
+    -fx-text-fill: #ffffff;
 }

@@ -6,6 +6,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class App extends Application {
     private static Stage primaryStage;
 
@@ -14,7 +16,6 @@ public class App extends Application {
         primaryStage = stage;
         showLoginScreen();
 
-//        primaryStage.setFullScreen(true);
         primaryStage.setTitle("Comet Messenger");
         primaryStage.show();
     }
@@ -23,7 +24,7 @@ public class App extends Application {
         try {
             FXMLLoader loader = new FXMLLoader(App.class.getResource("/com/comet/login-view.fxml"));
             Scene scene = new Scene(loader.load(), 400, 300);
-            scene.getStylesheets().add(App.class.getResource("/styles/main.css").toExternalForm());
+            scene.getStylesheets().add(Objects.requireNonNull(App.class.getResource("/styles/auth.css")).toExternalForm());
             primaryStage.setScene(scene);
         } catch (Exception e) {
             e.printStackTrace();
@@ -34,18 +35,7 @@ public class App extends Application {
         try {
             FXMLLoader loader = new FXMLLoader(App.class.getResource("/com/comet/signup-view.fxml"));
             Scene scene = new Scene(loader.load(), 400, 300);
-            scene.getStylesheets().add(App.class.getResource("/styles/main.css").toExternalForm());
-            primaryStage.setScene(scene);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void showChatScreen() {
-        try {
-            FXMLLoader loader = new  FXMLLoader(App.class.getResource("/com/comet/main-view.fxml"));
-            Scene scene = new Scene(loader.load(), 400, 300);
-            scene.getStylesheets().add(App.class.getResource("/styles/main.css").toExternalForm());
+            scene.getStylesheets().add(Objects.requireNonNull(App.class.getResource("/styles/auth.css")).toExternalForm());
             primaryStage.setScene(scene);
         } catch (Exception e) {
             e.printStackTrace();

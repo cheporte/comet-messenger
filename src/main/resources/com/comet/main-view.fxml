@@ -9,7 +9,7 @@
         </HBox>
     </top>
     <center>
-        <TextArea fx:id="chatArea" editable="false" wrapText="true" styleClass="text-field"/>
+        <TextArea fx:id="chatArea" editable="false" wrapText="true" styleClass="chat-field"/>
     </center>
     <bottom>
         <HBox>

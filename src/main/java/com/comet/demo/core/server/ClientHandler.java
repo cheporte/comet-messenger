@@ -5,6 +5,7 @@ import com.comet.db.DatabaseManager;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,6 +15,8 @@ public class ClientHandler implements Runnable {
     private final PrintWriter output;
     private final Scanner input;
     private String username;
+
+    private final static List<String> messageHistory = new ArrayList<>();
 
     public ClientHandler(Socket clientSocket, List<ClientHandler> clientHandlers) throws IOException {
         this.clientSocket = clientSocket;
@@ -47,15 +50,19 @@ public class ClientHandler implements Runnable {
                 }
             }
 
+            synchronized (messageHistory) {
+                for (String message : messageHistory) {
+                    output.println(message);
+                }
+            }
+
             broadcastMessage("[Server] " + username + " has joined the chat 🎉", false);
 
             // Step 4: Listen for messages and broadcast them
-            while (input.hasNextLine()) {
-                String message = input.nextLine();
+            String message;
+            while (input.hasNextLine() && (message = input.nextLine()) != null) {
                 broadcastMessage(username + ": " + message, true);
-                System.out.println("Message sent: [" + username + ": " + message + "]");
             }
-
         } catch (Exception e) {
             System.err.println("Client disconnected: " + e.getMessage());
         } finally {
@@ -78,6 +85,9 @@ public class ClientHandler implements Runnable {
                 if (!includeSelf && handler == this) continue;
                 handler.output.println(message);
             }
+        }
+        synchronized (messageHistory) {
+            messageHistory.add(message); // Store the message in history
         }
     }
 }
