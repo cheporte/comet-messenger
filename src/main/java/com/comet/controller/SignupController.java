@@ -4,9 +4,11 @@ import com.comet.db.DatabaseManager;
 import com.comet.demo.App;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class SignupController {
 
@@ -40,7 +42,12 @@ public class SignupController {
         boolean success = DatabaseManager.getInstance().createUser(username, password);
         if (success) {
             System.out.println("User created successfully");
-            App.showChatScreen();
+            LoginController.showChatScreen(username, password);
+
+            // Close the signup window
+            Node source = (Node) event.getSource();
+            Stage stage = (Stage) source.getScene().getWindow();
+            stage.close();
         } else {
             System.out.println("User creation failed");
         }

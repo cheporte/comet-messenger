@@ -7,9 +7,9 @@
     <VBox alignment="CENTER" spacing="12.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
           AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0">
         <Label text="🌟 Create your Comet Account 🌟" style="-fx-font-size: 18;"/>
-        <TextField fx:id="usernameField" promptText="Username" maxWidth="200"/>
-        <PasswordField fx:id="passwordField" promptText="Password" maxWidth="200"/>
-        <Button text="Sign Up" fx:id="signupButton"/>
-        <Button text="Back to Login" fx:id="loginRedirectButton"/>
+        <TextField fx:id="usernameField" promptText="Username" maxWidth="200" styleClass="text-field"/>
+        <PasswordField fx:id="passwordField" promptText="Password" maxWidth="200" styleClass="text-field"/>
+        <Button text="Sign Up" fx:id="signupButton" styleClass="button"/>
+        <Button text="Back to Login" fx:id="loginRedirectButton" styleClass="button"/>
     </VBox>
 </AnchorPane>

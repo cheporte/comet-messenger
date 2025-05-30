@@ -9,12 +9,12 @@
         </HBox>
     </top>
     <center>
-        <TextArea fx:id="chatArea" editable="false" wrapText="true" />
+        <TextArea fx:id="chatArea" editable="false" wrapText="true" styleClass="text-field"/>
     </center>
     <bottom>
         <HBox>
-            <TextField fx:id="messageField" HBox.hgrow="ALWAYS" />
-            <Button text="Send" onAction="#handleSend" />
+            <TextField fx:id="messageField" HBox.hgrow="ALWAYS" styleClass="text-field"/>
+            <Button text="Send" onAction="#handleSend" styleClass="button"/>
         </HBox>
     </bottom>
 </BorderPane>

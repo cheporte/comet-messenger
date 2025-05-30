@@ -12,13 +12,22 @@ public class ChatClient {
 
     private final String serverAddress;
     private final int serverPort;
-    private final String username;
-    private final Consumer<String> messageHandler; // Callback for GUI
+    private final Consumer<String> messageHandler;
 
-    public ChatClient(String serverAddress, int serverPort, String username, Consumer<String> messageHandler) {
+    private final String username;
+    private final String password;
+
+    public ChatClient(
+            String serverAddress,
+            int serverPort,
+            String username,
+            String password,
+            Consumer<String> messageHandler
+    ) {
         this.serverAddress = serverAddress;
         this.serverPort = serverPort;
         this.username = username;
+        this.password = password;
         this.messageHandler = messageHandler;
     }
 
@@ -28,8 +37,9 @@ public class ChatClient {
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-            // Send username first
+            // Send credentials
             out.println(username);
+            out.println(password);
 
             // Start listener thread
             listenerThread = new Thread(this::listenForMessages);

@@ -1,0 +1,13 @@
+.button {
+    -fx-background-color: #5a189a;
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-background-radius: 10;
+}
+
+.text-field {
+    -fx-background-color: #eee;
+    -fx-border-color: #5a189a;
+    -fx-border-radius: 6;
+    -fx-padding: 5 10;
+}

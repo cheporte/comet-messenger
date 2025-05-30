@@ -8,19 +8,29 @@ import javafx.scene.control.TextField;
 
 public class ChatController {
     private ChatClient chatClient;
+    private String username;
+    private String password; // Store the password
+
     @FXML
     private TextArea chatArea;
 
     @FXML
     private TextField messageField;
 
-    public void initialize() {
-        chatClient = new ChatClient("localhost", 12345, "Default User", this::onMessageReceived);
-        chatClient.start();
+    public void setUserCredentials(String username, String password) {
+        this.username = username;
+        this.password = password;
+        initializeChatClient();
     }
 
-    private void onMessageReceived(String message) {
-        Platform.runLater(() -> chatArea.appendText(message + "\n"));
+    private void initializeChatClient() {
+        if (username == null || username.isEmpty()) {
+            username = "Anonymous :3"; // fallback if ever needed
+        }
+
+        // Initialize ChatClient with both username and password
+        chatClient = new ChatClient("localhost", 12345, username, password, this::onMessageReceived);
+        chatClient.start();
     }
 
     @FXML
@@ -28,8 +38,12 @@ public class ChatController {
         String message = messageField.getText().trim();
         if (!message.isEmpty()) {
             chatArea.appendText("You: " + message + "\n");
+            chatClient.sendMessage(message);
             messageField.clear();
-            chatClient.sendMessage(messageField.getText());
         }
+    }
+
+    private void onMessageReceived(String message) {
+        Platform.runLater(() -> chatArea.appendText(message + "\n"));
     }
 }

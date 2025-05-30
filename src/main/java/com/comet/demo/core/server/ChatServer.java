@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ChatServer {
     private ServerSocket serverSocket;
-    private static final List<PrintWriter> clientWriters = new ArrayList<>();
+    private static final List<ClientHandler> clientHandlers = new ArrayList<>();
 
     private void start(int port) {
         try {
@@ -20,13 +20,13 @@ public class ChatServer {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("[Server] New client connected: " + clientSocket.getInetAddress().getHostAddress());
 
-                PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+                ClientHandler handler = new ClientHandler(clientSocket, clientHandlers);
 
-                synchronized (clientWriters) {
-                    clientWriters.add(writer);
+                synchronized (clientHandlers) {
+                    clientHandlers.add(handler);
                 }
 
-                new Thread(new ClientHandler(clientSocket, clientWriters)).start();
+                new Thread(handler).start();
             }
 
         } catch (IOException e) {
