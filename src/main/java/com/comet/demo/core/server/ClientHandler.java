@@ -8,8 +8,12 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ClientHandler implements Runnable {
+    private static final Logger logger = Logger.getLogger(ClientHandler.class.getName());
+
     private final Socket clientSocket;
     private final List<ClientHandler> clientHandlers;
     private final PrintWriter output;
@@ -36,7 +40,8 @@ public class ClientHandler implements Runnable {
             boolean loggedIn = DatabaseManager.getInstance().checkLogin(username, password);
 
             if (!loggedIn) {
-                output.println("[Server] ❌ Authentication failed. Closing connection.");
+                output.println("[Server] Authentication failed. Closing connection.");
+                logger.warning("Authentication failed for user: " + username);
                 clientSocket.close();
                 return; // stop here for bad login
             }
@@ -56,15 +61,17 @@ public class ClientHandler implements Runnable {
                 }
             }
 
+            logger.info("User connected: " + username);
             broadcastMessage("[Server] " + username + " has joined the chat 🎉", false);
 
             // Step 4: Listen for messages and broadcast them
             String message;
             while (input.hasNextLine() && (message = input.nextLine()) != null) {
+                logger.info("Message from " + username + ": " + message);
                 broadcastMessage(username + ": " + message, true);
             }
         } catch (Exception e) {
-            System.err.println("Client disconnected: " + e.getMessage());
+            logger.log(Level.SEVERE, "Error handling client.", e);
         } finally {
             try {
                 synchronized (clientHandlers) {
@@ -73,8 +80,10 @@ public class ClientHandler implements Runnable {
                     }
                 }
                 clientSocket.close();
+                logger.info("User disconnected: " + username);
                 broadcastMessage("[Server] " + username + " has left the chat 💔", false);
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                logger.log(Level.SEVERE, "Error closing client connection.", e);
             }
         }
     }

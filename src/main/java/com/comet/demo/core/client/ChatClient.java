@@ -4,7 +4,12 @@ import java.io.*;
 import java.net.Socket;
 import java.util.function.Consumer;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class ChatClient {
+    private static final Logger logger = Logger.getLogger(ChatClient.class.getName());
+
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
@@ -46,10 +51,12 @@ public class ChatClient {
             listenerThread.setDaemon(true);
             listenerThread.start();
 
-            messageHandler.accept("✅ Connected as " + username);
+            logger.info("Connected to the server as " + username);
+            messageHandler.accept("Connected as " + username);
 
         } catch (IOException e) {
-            messageHandler.accept("❌ Failed to connect: " + e.getMessage());
+            logger.log(Level.SEVERE, "Failed to connect to the server.", e);
+            messageHandler.accept("Failed to connect: " + e.getMessage());
         }
     }
 
@@ -57,10 +64,12 @@ public class ChatClient {
         try {
             String msg;
             while ((msg = in.readLine()) != null) {
+                logger.info("Received message: " + msg);
                 messageHandler.accept(msg);
             }
         } catch (IOException e) {
-            messageHandler.accept("⚠️ Connection lost.");
+            logger.log(Level.SEVERE, "Connection lost.", e);
+            messageHandler.accept("Connection lost.");
         } finally {
             close();
         }
@@ -78,8 +87,10 @@ public class ChatClient {
             if (in != null) in.close();
             if (socket != null) socket.close();
             if (listenerThread != null) listenerThread.interrupt();
+            logger.info("Disconnected from the server.");
         } catch (IOException e) {
-            messageHandler.accept("❌ Error closing connection: " + e.getMessage());
+            logger.log(Level.SEVERE, "Error closing connection.", e);
+            messageHandler.accept("Error closing connection: " + e.getMessage());
         }
     }
 }
