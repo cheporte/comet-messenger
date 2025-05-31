@@ -9,7 +9,7 @@ import java.util.List;
 
 public class DatabaseManager {
     private static DatabaseManager instance;
-    private HikariDataSource dataSource;
+    private final HikariDataSource dataSource;
     private Connection connection;
 
     private static final String DB_URL = System.getenv("COMET_DB_URL");
@@ -45,8 +45,9 @@ public class DatabaseManager {
         CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
             username VARCHAR(255) UNIQUE NOT NULL,
-            display_name VARCHAR(255) UNIQUE NOT NULL DEFAULT 'Another User',
-            password VARCHAR(255) NOT NULL
+            password VARCHAR(255) NOT NULL,
+            display_name VARCHAR(255) DEFAULT 'Another User',
+            image_url VARCHAR(255)
         )
     """;
 

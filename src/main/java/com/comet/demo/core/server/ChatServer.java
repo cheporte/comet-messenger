@@ -8,12 +8,17 @@ import java.util.List;
 
 public class ChatServer {
     private ServerSocket serverSocket;
+    private ChatWebSocketServer webSocketServer;
     private static final List<ClientHandler> clientHandlers = new ArrayList<>();
 
-    private void start(int port) {
+    private void start(int port, int webSocketPort) {
         try {
             serverSocket = new ServerSocket(port);
             System.out.println("[Server] Listening on port " + port + "...");
+
+            webSocketServer = new ChatWebSocketServer(webSocketPort);
+            webSocketServer.start();
+            System.out.println("[WebSocket Server] Listening on port " + webSocketPort + "...");
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
@@ -40,13 +45,18 @@ public class ChatServer {
             if (serverSocket != null) {
                 serverSocket.close();
             }
+            if (webSocketServer != null) {
+                webSocketServer.stop();
+            }
         } catch (IOException e) {
             System.err.println("[Server] Error while stopping: " + e.getMessage());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
     public static void main(String[] args) {
         ChatServer server = new ChatServer();
-        server.start(12345);
+        server.start(12345, 8887);
     }
 }

@@ -81,3 +81,57 @@
 .text-area .scroll-bar:horizontal {
     -fx-background-color: transparent; /* Transparent background for the scrollbar */
 }
+
+.list-view {
+    -fx-background-color: rgba(10, 14, 42, 0.7); /* Slightly transparent dark blue */
+    -fx-text-fill: #ffffff; /* White text */
+    -fx-font-size: 14px;
+    -fx-border-color: #7a8bc7; /* Light blue border */
+    -fx-border-radius: 6;
+    -fx-padding: 5;
+}
+
+.list-view .list-cell {
+    -fx-background-color: rgba(10, 14, 42, 0.7); /* Slightly transparent dark blue */
+    -fx-text-fill: #ffffff; /* White text */
+    -fx-padding: 5;
+}
+
+.list-view .list-cell:selected {
+    -fx-background-color: #5a189a; /* Purple background for selected items */
+    -fx-text-fill: #ffffff; /* White text for selected items */
+}
+
+.list-view:focused {
+    -fx-border-color: #7a8bc7; /* Light blue border when focused */
+    -fx-border-width: 2;
+}
+
+.list-view .scroll-bar:vertical .track,
+.list-view .scroll-bar:horizontal .track {
+    -fx-background-color: #2a2a2a; /* Dark background for the scrollbar track */
+    -fx-background-radius: 3px; /* Rounded corners for the scrollbar track */
+}
+
+.list-view .scroll-bar:vertical .thumb,
+.list-view .scroll-bar:horizontal .thumb {
+    -fx-background-color: #5a189a; /* Purple thumb */
+    -fx-background-radius: 5px; /* Rounded corners for the scrollbar thumb */
+}
+
+.list-view .scroll-bar .increment-button,
+.list-view .scroll-bar .decrement-button {
+    -fx-background-color: transparent; /* Transparent background for the scrollbar buttons */
+    -fx-padding: 0.2em; /* Padding around the scrollbar buttons */
+}
+
+.list-view .scroll-bar .increment-arrow,
+.list-view .scroll-bar .decrement-arrow {
+    -fx-shape: "M 0 0 L 5 5 L 10 0 Z"; /* Triangle shape for the scrollbar arrows */
+    -fx-background-color: #555; /* Color of the scrollbar arrows */
+}
+
+.user-display-name {
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}

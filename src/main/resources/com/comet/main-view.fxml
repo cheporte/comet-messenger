@@ -2,10 +2,32 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.comet.controller.ChatController">
     <left>
-        <ListView fx:id="chatListView" styleClass="chat-list" />
+        <VBox spacing="10" alignment="CENTER">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10" />
+            </padding>
+            <VBox spacing="10" alignment="CENTER">
+                <ListView fx:id="contactListView" styleClass="list-view"/>
+                <HBox spacing="10" alignment="CENTER">
+                    <Button text="Add Contact" onAction="#handleAddContact" styleClass="button" />
+                </HBox>
+            </VBox>
+            <VBox spacing="10" alignment="CENTER">
+                <ListView fx:id="chatListView" styleClass="list-view" />
+                <HBox spacing="10" alignment="CENTER">
+                    <Button text="Add Chat" onAction="#handleAddChat" styleClass="button" />
+                    <Button text="Add User" onAction="#handleAddUser" styleClass="button" />
+                </HBox>
+            </VBox>
+            <HBox spacing="10" alignment="CENTER">
+                <ImageView fx:id="userImageView" fitHeight="50" fitWidth="50" />
+                <Label fx:id="userDisplayName" styleClass="user-display-name" text="Another User"/>
+            </HBox>
+        </VBox>
     </left>
     <top>
         <VBox>
@@ -14,15 +36,13 @@
                     <Insets top="10" bottom="10" left="10" />
                 </padding>
                 <Label fx:id="currentChatLabel" styleClass="chat-title" text="Welcome to Comet Chat!" />
-                <Button text="Add Chat" onAction="#handleAddChat" styleClass="button" />
-                <Button text="Add User" onAction="#handleAddUser" styleClass="button" />
             </HBox>
         </VBox>
     </top>
     <center>
         <TextArea fx:id="chatArea" editable="false" wrapText="true" styleClass="chat-field">
             <BorderPane.margin>
-                <Insets bottom="10" />
+                <Insets top="10" right="10" bottom="10" left="10" />
             </BorderPane.margin>
         </TextArea>
     </center>
