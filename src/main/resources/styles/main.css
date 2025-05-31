@@ -11,12 +11,16 @@
     -fx-padding: 10;
 }
 
+.chat-title {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16;
+}
 
 .chat-field {
-    -fx-background-color: rgba(10, 14, 42, 0.7); /* Slightly transparent dark blue */
+    -fx-background-color: rgb(10, 14, 42); /* Slightly transparent dark blue */
     -fx-text-fill: #ffffff; /* White text */
     -fx-border-color: #7a8bc7; /* Light blue border */
-    -fx-border-radius: 6;
+    /*-fx-border-radius: 6;*/
     -fx-padding: 5 10;
 }
 
@@ -42,4 +46,38 @@
 
 .button:hover {
     -fx-background-color: #303f9f; /* Slightly lighter blue on hover */
+}
+
+/* Style for the scrollbar track */
+.text-area .scroll-bar:horizontal .track,
+.text-area .scroll-bar:vertical .track {
+    -fx-background-color: #2a2a2a; /* Dark background for the track */
+    -fx-background-radius: 3px; /* Rounded corners for the track */
+}
+
+/* Style for the scrollbar thumb */
+.text-area .scroll-bar:horizontal .thumb,
+.text-area .scroll-bar:vertical .thumb {
+    -fx-background-color: #5a189a; /* Purple thumb */
+    -fx-background-radius: 5px; /* Rounded corners for the thumb */
+}
+
+/* Style for the scrollbar buttons (arrows) */
+.text-area .scroll-bar .increment-button,
+.text-area .scroll-bar .decrement-button {
+    -fx-background-color: transparent; /* Transparent background for the buttons */
+    -fx-padding: 0.2em; /* Padding around the buttons */
+}
+
+/* Style for the arrow shape inside the buttons */
+.text-area .scroll-bar .increment-arrow,
+.text-area .scroll-bar .decrement-arrow {
+    -fx-shape: "M 0 0 L 5 5 L 10 0 Z"; /* Triangle shape for the arrow */
+    -fx-background-color: #555; /* Color of the arrow */
+}
+
+/* Style for the scrollbar itself */
+.text-area .scroll-bar:vertical,
+.text-area .scroll-bar:horizontal {
+    -fx-background-color: transparent; /* Transparent background for the scrollbar */
 }
