@@ -62,13 +62,14 @@ public class ClientHandler implements Runnable {
             }
 
             logger.info("User connected: " + username);
-            broadcastMessage("[Server] " + username + " has joined the chat 🎉", false);
+//            broadcastMessage("[Server] " + username + " has joined the chat 🎉", false);
 
             // Step 4: Listen for messages and broadcast them
             String message;
             while (input.hasNextLine() && (message = input.nextLine()) != null) {
                 logger.info("Message from " + username + ": " + message);
-                broadcastMessage(username + ": " + message, true);
+//                broadcastMessage(username + ": " + message, true);
+                broadcastMessage(message, true);
             }
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error handling client.", e);

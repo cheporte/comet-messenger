@@ -1,16 +1,30 @@
 package com.comet.db;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseManager {
     private static DatabaseManager instance;
+    private HikariDataSource dataSource;
     private Connection connection;
 
     private static final String DB_URL = System.getenv("COMET_DB_URL");
     private static final String DB_USER = System.getenv("COMET_DB_USER");
     private static final String DB_PASS = System.getenv("COMET_DB_PASS"); // haven't come up with env handling yet
 
-    private DatabaseManager() {
+    public DatabaseManager() {
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(DB_URL);
+        config.setUsername(DB_USER);
+        config.setPassword(DB_PASS);
+        config.setMaximumPoolSize(10); // Set the maximum pool size
+
+        dataSource = new HikariDataSource(config);
+
         try {
             connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             initSchema();
@@ -115,7 +129,87 @@ public class DatabaseManager {
         }
     }
 
-    public Connection getConnection() {
-        return connection;
+    public int createChat(String name, boolean isGroup) throws SQLException {
+        String insert = "INSERT INTO chats (name, is_group) VALUES (?, ?) RETURNING id";
+        try (PreparedStatement stmt = connection.prepareStatement(insert)) {
+            stmt.setString(1, name);
+            stmt.setBoolean(2, isGroup);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1); // Return the generated chat ID
+            }
+        }
+        throw new SQLException("Creating chat failed, no ID obtained.");
+    }
+
+    public void addUserToChat(int chatId, int userId) throws SQLException {
+        String insert = "INSERT INTO chat_members (chat_id, user_id) VALUES (?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(insert)) {
+            stmt.setInt(1, chatId);
+            stmt.setInt(2, userId);
+            stmt.executeUpdate();
+        }
+    }
+
+    public List<Integer> getChatMembers(int chatId) throws SQLException {
+        List<Integer> members = new ArrayList<>();
+        String query = "SELECT user_id FROM chat_members WHERE chat_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, chatId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                members.add(rs.getInt("user_id"));
+            }
+        }
+        return members;
+    }
+
+    public void addContact(int userId, int contactId) throws SQLException {
+        String insert = "INSERT INTO contacts (user_id, contact_id) VALUES (?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(insert)) {
+            stmt.setInt(1, userId);
+            stmt.setInt(2, contactId);
+            stmt.executeUpdate();
+        }
+    }
+
+    public List<Integer> getContacts(int userId) throws SQLException {
+        List<Integer> contacts = new ArrayList<>();
+        String query = "SELECT contact_id FROM contacts WHERE user_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                contacts.add(rs.getInt("contact_id"));
+            }
+        }
+        return contacts;
+    }
+
+    public void sendMessage(int chatId, int senderId, String content) throws SQLException {
+        String insert = "INSERT INTO messages (chat_id, sender_id, content) VALUES (?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(insert)) {
+            stmt.setInt(1, chatId);
+            stmt.setInt(2, senderId);
+            stmt.setString(3, content);
+            stmt.executeUpdate();
+        }
+    }
+
+    public List<String> getMessages(int chatId) throws SQLException {
+        List<String> messages = new ArrayList<>();
+        String query = "SELECT content FROM messages WHERE chat_id = ? ORDER BY timestamp";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, chatId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                messages.add(rs.getString("content"));
+            }
+        }
+        return messages;
+    }
+
+    public Connection getConnection() throws SQLException {
+        return dataSource.getConnection();
     }
 }

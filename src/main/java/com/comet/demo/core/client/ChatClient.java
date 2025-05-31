@@ -77,6 +77,7 @@ public class ChatClient {
 
     public void sendMessage(String msg) {
         if (out != null) {
+//            out.println(username + ": " + msg);
             out.println(msg);
         }
     }

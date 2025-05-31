@@ -7,6 +7,7 @@ module com.comet.demo {
     requires org.kordamp.bootstrapfx.core;
     requires transitive java.sql;
     requires transitive javafx.graphics;
+    requires com.zaxxer.hikari;
 
     opens com.comet.controller to javafx.fxml;
 

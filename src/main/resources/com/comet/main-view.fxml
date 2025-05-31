@@ -4,13 +4,18 @@
 <?import javafx.geometry.Insets?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.comet.controller.ChatController">
+    <left>
+        <ListView fx:id="chatListView" styleClass="chat-list" />
+    </left>
     <top>
         <VBox>
-            <HBox alignment="CENTER">
+            <HBox alignment="CENTER_LEFT" spacing="10">
                 <padding>
-                    <Insets top="10" bottom="10" />
+                    <Insets top="10" bottom="10" left="10" />
                 </padding>
-                <Label styleClass="chat-title" text="Welcome to Comet Chat!" />
+                <Label fx:id="currentChatLabel" styleClass="chat-title" text="Welcome to Comet Chat!" />
+                <Button text="Add Chat" onAction="#handleAddChat" styleClass="button" />
+                <Button text="Add User" onAction="#handleAddUser" styleClass="button" />
             </HBox>
         </VBox>
     </top>
