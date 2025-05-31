@@ -45,6 +45,7 @@ public class DatabaseManager {
         CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
             username VARCHAR(255) UNIQUE NOT NULL,
+            display_name VARCHAR(255) UNIQUE NOT NULL DEFAULT 'Another User',
             password VARCHAR(255) NOT NULL
         )
     """;

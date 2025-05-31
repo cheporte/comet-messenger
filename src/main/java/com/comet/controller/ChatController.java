@@ -22,6 +22,7 @@ public class ChatController {
     private String username;
     private String password; // Store the password
 
+    @FXML private ListView<String> contactListView;
     @FXML private ListView<String> chatListView;
     @FXML private TextArea chatArea;
     @FXML private TextField messageField;
@@ -137,13 +138,16 @@ public class ChatController {
 
     private void loadMessages(int chatId) {
         chatArea.clear();
-        String query = "SELECT content FROM messages WHERE chat_id = ? ORDER BY timestamp";
-        try (Connection connection = databaseManager.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
+        String query = "SELECT u.username, m.content FROM messages m JOIN users u ON m.sender_id = u.id WHERE chat_id = ? ORDER BY timestamp";
+        try (
+            Connection connection = databaseManager.getConnection();
+            PreparedStatement stmt = connection.prepareStatement(query)
+        ) {
             stmt.setInt(1, chatId);
             ResultSet rs = stmt.executeQuery();
+
             while (rs.next()) {
-                chatArea.appendText(rs.getString("content") + "\n");
+                chatArea.appendText(rs.getString("username") + ": " + rs.getString("content") + "\n");
             }
         } catch (SQLException e) {
             e.printStackTrace();
