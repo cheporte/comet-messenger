@@ -1,6 +1,9 @@
 package com.comet.controller;
 
 import com.comet.db.DatabaseManager;
+import com.comet.db.repository.ChatRepository;
+import com.comet.db.repository.ContactRepository;
+import com.comet.db.repository.UserRepository;
 import com.comet.demo.core.client.ChatClient;
 import com.comet.demo.core.client.ProfileDialog;
 import javafx.application.Platform;
@@ -10,7 +13,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
 import javafx.util.Pair;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -41,13 +43,20 @@ public class ChatController {
 
     private int currentUserId;
     private int currentChatId;
-    private DatabaseManager databaseManager;
+
+    private UserRepository userRepository;
+    private ChatRepository chatRepository;
+    private ContactRepository contactRepository;
 
     public void setUserCredentials(String username, String password) {
         this.username = username;
         this.password = password;
-        this.databaseManager = DatabaseManager.getInstance(); // Ensure DatabaseManager is initialized
-        this.currentUserId = getUserId(username, password);
+
+        this.userRepository = new UserRepository();
+        this.chatRepository = new ChatRepository();
+        this.contactRepository = new ContactRepository();
+
+        this.currentUserId = this.userRepository.getUserId(username, password);
         initializeChatClient();
 
         // Set initial UI state to reflect no chat is selected
@@ -122,42 +131,12 @@ public class ChatController {
         }
     }
 
-    private int getUserId(String username, String password) {
-        String query = "SELECT id FROM users WHERE username = ? AND password = ?";
-        try (Connection connection = databaseManager.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, username);
-            stmt.setString(2, password);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("id");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return -1; // Return -1 or handle error appropriately
-    }
-
-    private List<String> getContactsForUser(int userId) {
-        List<String> contacts = new ArrayList<>();
-        String query = "SELECT u.display_name FROM contacts c JOIN users u ON c.contact_id = u.id WHERE c.user_id = ?";
-        try (Connection connection = databaseManager.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, userId);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                contacts.add(rs.getString("display_name"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return contacts;
-    }
-
     private void loadUserProfile(int userId) {
         String query = "SELECT display_name, image_url FROM users WHERE id = ?";
-        try (Connection connection = databaseManager.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (
+            Connection connection = DatabaseManager.getInstance().getConnection();
+            PreparedStatement stmt = connection.prepareStatement(query)
+        ) {
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
@@ -174,7 +153,7 @@ public class ChatController {
     }
 
     private void loadChats() {
-        List<String> chats = getChatsForUser(currentUserId);
+        List<String> chats = chatRepository.getChatsForUser(currentUserId);
         ObservableList<String> observableChats = FXCollections.observableArrayList(chats);
         chatListView.setItems(observableChats);
 
@@ -185,7 +164,7 @@ public class ChatController {
         chatListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 currentChatLabel.setText(newValue);
-                currentChatId = getChatId(newValue);
+                currentChatId = chatRepository.getChatId(newValue);
                 loadMessages(currentChatId);
             } else {
                 // Clear the chat area if no chat is selected
@@ -197,7 +176,7 @@ public class ChatController {
     }
 
     private void loadContacts() {
-        List<String> contacts = getContactsForUser(currentUserId);
+        List<String> contacts = contactRepository.getContactNamesForUser(currentUserId);
         ObservableList<String> observableContacts = FXCollections.observableArrayList(contacts);
         contactListView.setItems(observableContacts);
 
@@ -205,9 +184,9 @@ public class ChatController {
         contactListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 currentChatLabel.setText("Chat with " + newValue);
-                int contactId = getUserIdByDisplayName(newValue);
+                int contactId = userRepository.getUserIdByDisplayName(newValue);
                 if (contactId != -1) {
-                    currentChatId = getPrivateChatId(currentUserId, contactId);
+                    currentChatId = chatRepository.getPrivateChatId(currentUserId, contactId);
                     loadMessages(currentChatId);
                 }
             } else {
@@ -219,105 +198,24 @@ public class ChatController {
         });
     }
 
-    private int getPrivateChatId(int userId1, int userId2) {
-        String query = "SELECT id FROM chats WHERE is_group = FALSE AND id IN " +
-                "(SELECT chat_id FROM chat_members WHERE user_id = ?) AND id IN " +
-                "(SELECT chat_id FROM chat_members WHERE user_id = ?)";
-        try (Connection connection = databaseManager.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, userId1);
-            stmt.setInt(2, userId2);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("id");
-            } else {
-                // If no private chat exists, create one
-                return createPrivateChat(userId1, userId2);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return -1; // Return -1 if an error occurs
-    }
-
-    private int createPrivateChat(int userId1, int userId2) {
-        try {
-            int chatId = databaseManager.createChat("Private Chat", false);
-            databaseManager.addUserToChat(chatId, userId1);
-            databaseManager.addUserToChat(chatId, userId2);
-            return chatId;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return -1; // Return -1 if an error occurs
-    }
-
-
-    private int getUserIdByDisplayName(String displayName) {
-        String query = "SELECT id FROM users WHERE display_name = ?";
-        try (Connection connection = databaseManager.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, displayName);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("id");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return -1; // Return -1 if user not found
-    }
-
     @FXML
     private void handleAddChat() {
         String newChatName = "New Chat " + (chatListView.getItems().size() + 1); // Simple naming for new chats
         try {
-            int newChatId = databaseManager.createChat(newChatName, false);
-            databaseManager.addUserToChat(newChatId, currentUserId);
+            int newChatId = chatRepository.createChat(newChatName, false);
+            chatRepository.addUserToChat(newChatId, currentUserId);
             loadChats(); // Refresh the list of chats
-            // Do not automatically select the new chat, let the user select it
         } catch (SQLException e) {
             e.printStackTrace();
+            System.err.println("Failed to create new chat: " + e.getMessage());
         }
-    }
-
-
-    private List<String> getChatsForUser(int userId) {
-        List<String> chats = new ArrayList<>();
-        String query = "SELECT c.name FROM chats c JOIN chat_members cm ON c.id = cm.chat_id WHERE cm.user_id = ?";
-        try (Connection connection = databaseManager.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, userId);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                chats.add(rs.getString("name"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return chats;
-    }
-
-    private int getChatId(String chatName) {
-        String query = "SELECT id FROM chats WHERE name = ?";
-        try (Connection connection = databaseManager.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, chatName);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("id");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return -1; // Return -1 or handle error appropriately
     }
 
     private void loadMessages(int chatId) {
         chatArea.clear();
         String query = "SELECT u.username, m.content FROM messages m JOIN users u ON m.sender_id = u.id WHERE chat_id = ? ORDER BY timestamp";
         try (
-            Connection connection = databaseManager.getConnection();
+            Connection connection = DatabaseManager.getInstance().getConnection();
             PreparedStatement stmt = connection.prepareStatement(query)
         ) {
             stmt.setInt(1, chatId);
@@ -346,9 +244,9 @@ public class ChatController {
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(username -> {
             try {
-                int userId = getUserIdByUsername(username);
+                int userId = userRepository.getUserIdByUsername(username);
                 if (userId != -1) {
-                    databaseManager.addUserToChat(currentChatId, userId);
+                    chatRepository.addUserToChat(currentChatId, userId);
                     System.out.println("User added to chat successfully.");
                 } else {
                     System.err.println("User not found.");
@@ -374,9 +272,9 @@ public class ChatController {
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(username -> {
             try {
-                int userId = getUserIdByUsername(username);
+                int userId = userRepository.getUserIdByUsername(username);
                 if (userId != -1) {
-                    databaseManager.addContact(currentUserId, userId);
+                    contactRepository.addContact(currentUserId, userId);
                     System.out.println("Contact saved successfully.");
                 } else {
                     System.err.println("User not found.");
@@ -385,21 +283,6 @@ public class ChatController {
                 e.printStackTrace();
             }
         });
-    }
-
-    private int getUserIdByUsername(String username) {
-        String query = "SELECT id FROM users WHERE username = ?";
-        try (Connection connection = databaseManager.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, username);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("id");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return -1; // Return -1 if user not found
     }
 
     @FXML
@@ -414,8 +297,10 @@ public class ChatController {
 
     private void sendMessage(int chatId, int senderId, String content) {
         String insert = "INSERT INTO messages (chat_id, sender_id, content) VALUES (?, ?, ?)";
-        try (Connection connection = databaseManager.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(insert)) {
+        try (
+            Connection connection = DatabaseManager.getInstance().getConnection();
+            PreparedStatement stmt = connection.prepareStatement(insert)
+        ) {
             stmt.setInt(1, chatId);
             stmt.setInt(2, senderId);
             stmt.setString(3, content);
@@ -444,7 +329,7 @@ public class ChatController {
             String newImageUrl = pair.getValue();
 
             // Update the profile in the database
-            updateUserProfile(currentUserId, newDisplayName, newImageUrl);
+            userRepository.updateUserProfile(currentUserId, newDisplayName, newImageUrl);
 
             // Update the UI
             userDisplayName.setText(newDisplayName);
@@ -453,19 +338,6 @@ public class ChatController {
                 userImageView.setImage(image);
             }
         });
-    }
-
-    private void updateUserProfile(int userId, String displayName, String imageUrl) {
-        String query = "UPDATE users SET display_name = ?, image_url = ? WHERE id = ?";
-        try (Connection connection = databaseManager.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, displayName);
-            stmt.setString(2, imageUrl);
-            stmt.setInt(3, userId);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     private void onMessageReceived(String message) {

@@ -1,6 +1,6 @@
 package com.comet.controller;
 
-import com.comet.db.DatabaseManager;
+import com.comet.db.repository.UserRepository;
 import com.comet.demo.App;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,24 +11,18 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class SignupController {
+    private UserRepository userRepository;
 
-    @FXML
-    private TextField usernameField;
-
-    @FXML
-    private TextField displayNameField;
-
-    @FXML
-    private PasswordField passwordField;
-
-    @FXML
-    private Button signupButton;
-
-    @FXML
-    private Button loginRedirectButton;
+    @FXML private TextField usernameField;
+    @FXML private TextField displayNameField;
+    @FXML private PasswordField passwordField;
+    @FXML private Button signupButton;
+    @FXML private Button loginRedirectButton;
 
     @FXML
     private void initialize() {
+        userRepository = new UserRepository();
+
         signupButton.setOnAction(this::handleSignup);
         loginRedirectButton.setOnAction(this::handleLoginRedirect);
     }
@@ -43,7 +37,7 @@ public class SignupController {
             return;
         }
 
-        boolean success = DatabaseManager.getInstance().createUser(username, displayName, password);
+        boolean success = userRepository.createUser(username, displayName, password);
         if (success) {
             System.out.println("User created successfully");
             LoginController.showChatScreen(username, password);

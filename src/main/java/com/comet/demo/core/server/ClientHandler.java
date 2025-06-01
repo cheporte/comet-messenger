@@ -1,10 +1,12 @@
 package com.comet.demo.core.server;
 
 import com.comet.db.DatabaseManager;
+import com.comet.db.repository.UserRepository;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -19,14 +21,24 @@ public class ClientHandler implements Runnable {
     private final PrintWriter output;
     private final Scanner input;
     private String username;
-
     private final static List<String> messageHistory = new ArrayList<>();
 
+    private final UserRepository userRepository;
+
     public ClientHandler(Socket clientSocket, List<ClientHandler> clientHandlers) throws IOException {
-        this.clientSocket = clientSocket;
-        this.clientHandlers = clientHandlers;
-        this.output = new PrintWriter(this.clientSocket.getOutputStream(), true);
-        this.input = new Scanner(this.clientSocket.getInputStream());
+        try {
+            this.clientSocket = clientSocket;
+            this.clientHandlers = clientHandlers;
+            this.output = new PrintWriter(this.clientSocket.getOutputStream(), true);
+            this.input = new Scanner(this.clientSocket.getInputStream());
+            this.userRepository = new UserRepository(DatabaseManager.getInstance().getConnection());
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Error initializing client handler.", e);
+            throw e;
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error initializing UserRepository.", e);
+            throw new IOException("Database connection error", e);
+        }
     }
 
     @Override
@@ -37,7 +49,7 @@ public class ClientHandler implements Runnable {
             String password = input.nextLine();
 
             // Step 2: Validate user in DB
-            boolean loggedIn = DatabaseManager.getInstance().checkLogin(username, password);
+            boolean loggedIn = userRepository.checkLogin(username, password);
 
             if (!loggedIn) {
                 output.println("[Server] Authentication failed. Closing connection.");
@@ -62,13 +74,11 @@ public class ClientHandler implements Runnable {
             }
 
             logger.info("User connected: " + username);
-//            broadcastMessage("[Server] " + username + " has joined the chat 🎉", false);
 
             // Step 4: Listen for messages and broadcast them
             String message;
             while (input.hasNextLine() && (message = input.nextLine()) != null) {
                 logger.info("Message from " + username + ": " + message);
-//                broadcastMessage(username + ": " + message, true);
                 broadcastMessage(message, true);
             }
         } catch (Exception e) {

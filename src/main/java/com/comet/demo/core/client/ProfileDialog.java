@@ -4,7 +4,6 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
-import java.util.Optional;
 
 public class ProfileDialog extends Dialog<Pair<String, String>> {
 

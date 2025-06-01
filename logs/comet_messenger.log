@@ -209,3 +209,329 @@
 [2025-05-31 20:06:22] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
 [2025-05-31 20:06:29] [INFO   ] Received message: cheporte: try again 
 [2025-05-31 20:06:58] [INFO   ] Received message: cherry: and now? 
+[2025-05-31 23:52:29] [INFO   ] Starting the application... 
+[2025-05-31 23:52:30] [INFO   ] Application started successfully. 
+[2025-05-31 23:52:39] [INFO   ] Connected to the server as cheporte 
+[2025-05-31 23:52:56] [INFO   ] Received message: Now it should work fine 
+[2025-05-31 23:53:29] [INFO   ] Starting the application... 
+[2025-05-31 23:53:29] [INFO   ] Application started successfully. 
+[2025-05-31 23:53:38] [INFO   ] Connected to the server as cheporte 
+[2025-05-31 23:53:38] [INFO   ] Received message: Now it should work fine 
+[2025-05-31 23:53:38] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-05-31 23:53:47] [INFO   ] Received message: cheporte: Is it fixed now? 
+[2025-05-31 23:54:12] [INFO   ] Received message: cherry: Yup, it is 
+[2025-05-31 23:54:49] [INFO   ] Received message: cherry: Now we only need to just retrieve username from database and smash it into message :D 
+[2025-05-31 23:56:17] [INFO   ] Received message: [Server] cherry has left the chat 💔 
+[2025-06-01 00:08:54] [INFO   ] Starting the application... 
+[2025-06-01 00:08:54] [INFO   ] Application started successfully. 
+[2025-06-01 00:09:01] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 00:09:28] [INFO   ] Starting the application... 
+[2025-06-01 00:09:28] [INFO   ] Application started successfully. 
+[2025-06-01 00:09:38] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 00:09:38] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 00:12:06] [INFO   ] Starting the application... 
+[2025-06-01 00:12:07] [INFO   ] Application started successfully. 
+[2025-06-01 00:12:15] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 00:12:15] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 00:12:15] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 00:12:28] [INFO   ] Received message: cheporte: Oh, chat history fixed! 
+[2025-06-01 00:12:48] [INFO   ] Received message: cheporte: That is perfect! 
+[2025-06-01 00:28:10] [INFO   ] Starting the application... 
+[2025-06-01 00:28:10] [INFO   ] Application started successfully. 
+[2025-06-01 00:28:52] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 00:29:33] [INFO   ] Received message: cheporte: Hello! 
+[2025-06-01 00:29:37] [INFO   ] Received message: [Server] cherry has left the chat 💔 
+[2025-06-01 00:30:02] [INFO   ] Received message: cherry: Hellooooooo! 
+[2025-06-01 00:30:18] [INFO   ] Received message: [Server] cherry has left the chat 💔 
+[2025-06-01 00:34:57] [INFO   ] Starting the application... 
+[2025-06-01 00:34:57] [INFO   ] Application started successfully. 
+[2025-06-01 00:35:04] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 00:35:04] [INFO   ] Received message: cheporte: Hello! 
+[2025-06-01 00:35:04] [INFO   ] Received message: [Server] cherry has left the chat 💔 
+[2025-06-01 00:35:04] [INFO   ] Received message: cherry: Hellooooooo! 
+[2025-06-01 00:35:04] [INFO   ] Received message: [Server] cherry has left the chat 💔 
+[2025-06-01 00:35:04] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 00:35:35] [INFO   ] Received message: cherry: This is a new chat with cheporte 
+[2025-06-01 00:51:47] [INFO   ] Starting the application... 
+[2025-06-01 00:51:48] [INFO   ] Application started successfully. 
+[2025-06-01 00:51:55] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 00:52:41] [INFO   ] Received message: cherry: Hello, cheporte 
+[2025-06-01 00:53:01] [INFO   ] Received message: cherry: Hey there 
+[2025-06-01 00:53:07] [INFO   ] Received message: cheporte: Hey1 
+[2025-06-01 00:53:51] [INFO   ] Received message: cheporte: Finally, I'm here 
+[2025-06-01 00:54:18] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 01:00:42] [INFO   ] Starting the application... 
+[2025-06-01 01:00:42] [INFO   ] Application started successfully. 
+[2025-06-01 01:00:50] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 01:01:25] [INFO   ] Starting the application... 
+[2025-06-01 01:01:26] [INFO   ] Application started successfully. 
+[2025-06-01 01:01:34] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 01:01:34] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 01:03:13] [INFO   ] Starting the application... 
+[2025-06-01 01:03:14] [INFO   ] Application started successfully. 
+[2025-06-01 01:03:21] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 01:03:21] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 01:03:21] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 01:05:06] [INFO   ] Received message: cheporte: cheporte 
+[2025-06-01 01:05:13] [INFO   ] Received message: cherry: Really 
+[2025-06-01 01:27:05] [INFO   ] Starting the application... 
+[2025-06-01 01:27:05] [INFO   ] Application started successfully. 
+[2025-06-01 01:27:11] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 01:28:08] [INFO   ] Starting the application... 
+[2025-06-01 01:28:08] [INFO   ] Application started successfully. 
+[2025-06-01 01:28:14] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 01:28:14] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 01:30:27] [INFO   ] Starting the application... 
+[2025-06-01 01:30:27] [INFO   ] Application started successfully. 
+[2025-06-01 01:30:33] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 01:30:33] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 01:30:33] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 01:34:18] [INFO   ] Starting the application... 
+[2025-06-01 01:34:19] [INFO   ] Application started successfully. 
+[2025-06-01 01:34:25] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 01:34:25] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 01:34:25] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 01:34:25] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 13:28:38] [INFO   ] Starting the application... 
+[2025-06-01 13:28:39] [INFO   ] Application started successfully. 
+[2025-06-01 13:28:45] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 13:29:22] [INFO   ] Starting the application... 
+[2025-06-01 13:29:23] [INFO   ] Application started successfully. 
+[2025-06-01 13:29:38] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 13:32:23] [INFO   ] Received message: [Server] cherry has left the chat 💔 
+[2025-06-01 13:32:28] [INFO   ] Starting the application... 
+[2025-06-01 13:32:29] [INFO   ] Application started successfully. 
+[2025-06-01 13:32:35] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 13:32:35] [INFO   ] Received message: [Server] cherry has left the chat 💔 
+[2025-06-01 13:32:35] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 13:32:46] [INFO   ] Received message: cheporte: Heeeey! 
+[2025-06-01 13:34:50] [INFO   ] Received message: cherry: What's up, pal! 
+[2025-06-01 13:42:14] [INFO   ] Received message: cherry: Hey there! 
+[2025-06-01 14:33:00] [INFO   ] Received message: [Server] cherry has left the chat 💔 
+[2025-06-01 14:43:26] [INFO   ] Starting the application... 
+[2025-06-01 14:43:26] [INFO   ] Application started successfully. 
+[2025-06-01 14:44:22] [INFO   ] Starting the application... 
+[2025-06-01 14:44:23] [INFO   ] Application started successfully. 
+[2025-06-01 14:48:27] [INFO   ] Starting the application... 
+[2025-06-01 14:48:27] [INFO   ] Application started successfully. 
+[2025-06-01 14:49:20] [INFO   ] Starting the application... 
+[2025-06-01 14:49:20] [INFO   ] Application started successfully. 
+[2025-06-01 14:49:27] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 14:53:38] [SEVERE ] Connection lost. 
+[2025-06-01 14:53:38] [INFO   ] Disconnected from the server. 
+[2025-06-01 15:40:25] [INFO   ] Starting the application... 
+[2025-06-01 15:40:25] [INFO   ] Application started successfully. 
+[2025-06-01 15:42:34] [INFO   ] Starting the application... 
+[2025-06-01 15:42:34] [INFO   ] Application started successfully. 
+[2025-06-01 15:42:43] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 15:44:47] [INFO   ] Starting the application... 
+[2025-06-01 15:44:47] [INFO   ] Application started successfully. 
+[2025-06-01 15:44:55] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 15:44:55] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:09:20] [INFO   ] Starting the application... 
+[2025-06-01 18:09:20] [INFO   ] Application started successfully. 
+[2025-06-01 18:09:27] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 18:12:09] [INFO   ] Starting the application... 
+[2025-06-01 18:12:09] [INFO   ] Application started successfully. 
+[2025-06-01 18:12:16] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 18:13:06] [INFO   ] Starting the application... 
+[2025-06-01 18:13:07] [INFO   ] Application started successfully. 
+[2025-06-01 18:13:14] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 18:13:14] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:13:26] [INFO   ] Received message: cheporte: hey 
+[2025-06-01 18:15:37] [INFO   ] Starting the application... 
+[2025-06-01 18:15:37] [INFO   ] Application started successfully. 
+[2025-06-01 18:15:46] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 18:15:46] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:15:46] [INFO   ] Received message: cheporte: hey 
+[2025-06-01 18:15:46] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:17:05] [INFO   ] Starting the application... 
+[2025-06-01 18:17:05] [INFO   ] Application started successfully. 
+[2025-06-01 18:17:11] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 18:17:11] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:17:11] [INFO   ] Received message: cheporte: hey 
+[2025-06-01 18:17:11] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:17:11] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:19:22] [INFO   ] Starting the application... 
+[2025-06-01 18:19:23] [INFO   ] Application started successfully. 
+[2025-06-01 18:19:31] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 18:19:31] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:19:31] [INFO   ] Received message: cheporte: hey 
+[2025-06-01 18:19:31] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:19:31] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:19:31] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:23:04] [INFO   ] Starting the application... 
+[2025-06-01 18:23:05] [INFO   ] Application started successfully. 
+[2025-06-01 18:23:12] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 18:23:12] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:23:12] [INFO   ] Received message: cheporte: hey 
+[2025-06-01 18:23:12] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:23:12] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:23:12] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:23:12] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:25:58] [INFO   ] Starting the application... 
+[2025-06-01 18:25:59] [INFO   ] Application started successfully. 
+[2025-06-01 18:26:06] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 18:26:06] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:26:06] [INFO   ] Received message: cheporte: hey 
+[2025-06-01 18:26:06] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:26:06] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:26:06] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:26:06] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:26:06] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:26:21] [INFO   ] Received message: cheporte: gggg 
+[2025-06-01 18:27:04] [INFO   ] Starting the application... 
+[2025-06-01 18:27:05] [INFO   ] Application started successfully. 
+[2025-06-01 18:27:12] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 18:27:12] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:27:12] [INFO   ] Received message: cheporte: hey 
+[2025-06-01 18:27:12] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:27:12] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:27:12] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:27:12] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:27:12] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:27:12] [INFO   ] Received message: cheporte: gggg 
+[2025-06-01 18:27:12] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:27:25] [INFO   ] Received message: cheporte: hhhhe 
+[2025-06-01 18:27:31] [INFO   ] Received message: cheporte: sssss 
+[2025-06-01 18:28:51] [INFO   ] Starting the application... 
+[2025-06-01 18:28:51] [INFO   ] Application started successfully. 
+[2025-06-01 18:28:59] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 18:28:59] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:28:59] [INFO   ] Received message: cheporte: hey 
+[2025-06-01 18:28:59] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:28:59] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:28:59] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:28:59] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:28:59] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:28:59] [INFO   ] Received message: cheporte: gggg 
+[2025-06-01 18:28:59] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:28:59] [INFO   ] Received message: cheporte: hhhhe 
+[2025-06-01 18:28:59] [INFO   ] Received message: cheporte: sssss 
+[2025-06-01 18:28:59] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:29:15] [INFO   ] Starting the application... 
+[2025-06-01 18:29:15] [INFO   ] Application started successfully. 
+[2025-06-01 18:29:23] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 18:29:23] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:29:23] [INFO   ] Received message: cheporte: hey 
+[2025-06-01 18:29:23] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:29:23] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:29:23] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:29:23] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:29:23] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:29:23] [INFO   ] Received message: cheporte: gggg 
+[2025-06-01 18:29:23] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:29:23] [INFO   ] Received message: cheporte: hhhhe 
+[2025-06-01 18:29:23] [INFO   ] Received message: cheporte: sssss 
+[2025-06-01 18:29:23] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:29:23] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:30:02] [INFO   ] Starting the application... 
+[2025-06-01 18:30:03] [INFO   ] Application started successfully. 
+[2025-06-01 18:30:10] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 18:30:10] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:30:10] [INFO   ] Received message: cheporte: hey 
+[2025-06-01 18:30:10] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:30:10] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:30:10] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:30:10] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:30:10] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:30:10] [INFO   ] Received message: cheporte: gggg 
+[2025-06-01 18:30:10] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:30:10] [INFO   ] Received message: cheporte: hhhhe 
+[2025-06-01 18:30:10] [INFO   ] Received message: cheporte: sssss 
+[2025-06-01 18:30:10] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:30:10] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:30:10] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:31:21] [INFO   ] Starting the application... 
+[2025-06-01 18:31:22] [INFO   ] Application started successfully. 
+[2025-06-01 18:31:29] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 18:31:29] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:31:29] [INFO   ] Received message: cheporte: hey 
+[2025-06-01 18:31:29] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:31:29] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:31:29] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:31:29] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:31:29] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:31:29] [INFO   ] Received message: cheporte: gggg 
+[2025-06-01 18:31:29] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:31:29] [INFO   ] Received message: cheporte: hhhhe 
+[2025-06-01 18:31:29] [INFO   ] Received message: cheporte: sssss 
+[2025-06-01 18:31:29] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:31:29] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:31:29] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:31:29] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:33:55] [INFO   ] Starting the application... 
+[2025-06-01 18:33:56] [INFO   ] Application started successfully. 
+[2025-06-01 18:34:04] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 18:34:04] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:34:04] [INFO   ] Received message: cheporte: hey 
+[2025-06-01 18:34:04] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:34:04] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:34:04] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:34:04] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:34:04] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:34:04] [INFO   ] Received message: cheporte: gggg 
+[2025-06-01 18:34:04] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:34:04] [INFO   ] Received message: cheporte: hhhhe 
+[2025-06-01 18:34:04] [INFO   ] Received message: cheporte: sssss 
+[2025-06-01 18:34:04] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:34:04] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:34:04] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:34:04] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:34:04] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:35:15] [INFO   ] Starting the application... 
+[2025-06-01 18:35:16] [INFO   ] Application started successfully. 
+[2025-06-01 18:35:23] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 18:35:23] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:35:23] [INFO   ] Received message: cheporte: hey 
+[2025-06-01 18:35:23] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:35:23] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:35:23] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:35:23] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:35:23] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:35:23] [INFO   ] Received message: cheporte: gggg 
+[2025-06-01 18:35:23] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:35:23] [INFO   ] Received message: cheporte: hhhhe 
+[2025-06-01 18:35:23] [INFO   ] Received message: cheporte: sssss 
+[2025-06-01 18:35:23] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:35:23] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:35:23] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:35:23] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:35:23] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:35:23] [INFO   ] Received message: [Server] cheporte has left the chat 💔 
+[2025-06-01 18:39:28] [INFO   ] Starting the application... 
+[2025-06-01 18:39:29] [INFO   ] Application started successfully. 
+[2025-06-01 18:39:36] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 18:39:47] [INFO   ] Received message: cheporte: Another try 
+[2025-06-01 18:40:23] [INFO   ] Received message: cherry: Yup 
+[2025-06-01 18:40:47] [INFO   ] Received message: cheporte: Hello, cherry in group chat 
+[2025-06-01 18:40:56] [INFO   ] Received message: [Server] cherry has left the chat 💔 
+[2025-06-01 18:41:20] [INFO   ] Received message: cherry: Hello as well 
+[2025-06-01 18:41:28] [INFO   ] Received message: cheporte: Sheesh 
+[2025-06-01 20:41:53] [INFO   ] Starting the application... 
+[2025-06-01 20:41:54] [INFO   ] Application started successfully. 
+[2025-06-01 20:42:23] [INFO   ] Connected to the server as oigenoum 
+[2025-06-01 21:00:16] [INFO   ] Starting the application... 
+[2025-06-01 21:00:17] [INFO   ] Application started successfully. 
+[2025-06-01 21:00:24] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 21:01:05] [INFO   ] Received message: cherry: Hello 
+[2025-06-01 21:01:10] [INFO   ] Received message: cheporte: Hey! 
+[2025-06-01 21:49:51] [INFO   ] Starting the application... 
+[2025-06-01 21:49:52] [INFO   ] Application started successfully. 
+[2025-06-01 21:50:01] [INFO   ] [UserRepo] Checking login for user: {0} 
+[2025-06-01 21:50:02] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 21:50:02] [INFO   ] [ChatRepo] Retrieving chats for user: {0} 
+[2025-06-01 21:50:02] [INFO   ] [ChatRepo] Found chat: {0} for user: {1} 
+[2025-06-01 21:50:02] [INFO   ] [ChatRepo] Found chat: {0} for user: {1} 
+[2025-06-01 21:50:02] [INFO   ] [ContactRepo] Retrieving contact names for user: {0} 
+[2025-06-01 21:50:02] [INFO   ] [ContactRepo] Found contact name: {0} for user: {1} 
+[2025-06-01 21:50:08] [INFO   ] [ChatRepo] Retrieving chat ID for chat name: {0} 
+[2025-06-01 21:50:08] [INFO   ] [ChatRepo] Found chat ID: {0} for chat name: {1} 
+[2025-06-01 21:50:10] [INFO   ] [ChatRepo] Retrieving chat ID for chat name: {0} 
+[2025-06-01 21:50:10] [INFO   ] [ChatRepo] Found chat ID: {0} for chat name: {1} 
+[2025-06-01 21:50:13] [INFO   ] [ChatRepo] Retrieving private chat ID for users: {0} and {1} 
+[2025-06-01 21:50:13] [INFO   ] [ChatRepo] Found existing private chat ID: {0} for users: {1} and {2} 
+[2025-06-01 21:50:17] [INFO   ] [ChatRepo] Retrieving chat ID for chat name: {0} 
+[2025-06-01 21:50:17] [INFO   ] [ChatRepo] Found chat ID: {0} for chat name: {1} 
+[2025-06-01 21:50:24] [INFO   ] Received message: cheporte: Heeeeeey! 
+[2025-06-01 21:50:31] [SEVERE ] Connection lost. 

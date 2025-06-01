@@ -8,7 +8,7 @@ module com.comet.demo {
     requires transitive java.sql;
     requires transitive javafx.graphics;
     requires com.zaxxer.hikari;
-    requires Java.WebSocket;
+    requires transitive Java.WebSocket;
 
     opens com.comet.controller to javafx.fxml;
 
