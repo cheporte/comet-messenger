@@ -133,7 +133,8 @@ public class DatabaseManager {
 
     public int createChat(String name, boolean isGroup) throws SQLException {
         String insert = "INSERT INTO chats (name, is_group) VALUES (?, ?) RETURNING id";
-        try (PreparedStatement stmt = connection.prepareStatement(insert)) {
+        try (Connection connection = getConnection();
+             PreparedStatement stmt = connection.prepareStatement(insert)) {
             stmt.setString(1, name);
             stmt.setBoolean(2, isGroup);
             ResultSet rs = stmt.executeQuery();
@@ -146,7 +147,8 @@ public class DatabaseManager {
 
     public void addUserToChat(int chatId, int userId) throws SQLException {
         String insert = "INSERT INTO chat_members (chat_id, user_id) VALUES (?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(insert)) {
+        try (Connection connection = getConnection();
+             PreparedStatement stmt = connection.prepareStatement(insert)) {
             stmt.setInt(1, chatId);
             stmt.setInt(2, userId);
             stmt.executeUpdate();

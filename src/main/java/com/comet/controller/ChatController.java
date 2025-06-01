@@ -2,6 +2,7 @@ package com.comet.controller;
 
 import com.comet.db.DatabaseManager;
 import com.comet.demo.core.client.ChatClient;
+import com.comet.demo.core.client.ProfileDialog;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
@@ -136,12 +138,6 @@ public class ChatController {
         return -1; // Return -1 or handle error appropriately
     }
 
-    private void loadContacts() {
-        List<String> contacts = getContactsForUser(currentUserId);
-        ObservableList<String> observableContacts = FXCollections.observableArrayList(contacts);
-        contactListView.setItems(observableContacts);
-    }
-
     private List<String> getContactsForUser(int userId) {
         List<String> contacts = new ArrayList<>();
         String query = "SELECT u.display_name FROM contacts c JOIN users u ON c.contact_id = u.id WHERE c.user_id = ?";
@@ -200,6 +196,77 @@ public class ChatController {
         });
     }
 
+    private void loadContacts() {
+        List<String> contacts = getContactsForUser(currentUserId);
+        ObservableList<String> observableContacts = FXCollections.observableArrayList(contacts);
+        contactListView.setItems(observableContacts);
+
+        // Set up the listener for contact selection
+        contactListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                currentChatLabel.setText("Chat with " + newValue);
+                int contactId = getUserIdByDisplayName(newValue);
+                if (contactId != -1) {
+                    currentChatId = getPrivateChatId(currentUserId, contactId);
+                    loadMessages(currentChatId);
+                }
+            } else {
+                // Clear the chat area if no contact is selected
+                currentChatLabel.setText("No contact selected");
+                chatArea.clear();
+                currentChatId = -1; // Reset currentChatId to indicate no chat is selected
+            }
+        });
+    }
+
+    private int getPrivateChatId(int userId1, int userId2) {
+        String query = "SELECT id FROM chats WHERE is_group = FALSE AND id IN " +
+                "(SELECT chat_id FROM chat_members WHERE user_id = ?) AND id IN " +
+                "(SELECT chat_id FROM chat_members WHERE user_id = ?)";
+        try (Connection connection = databaseManager.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, userId1);
+            stmt.setInt(2, userId2);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            } else {
+                // If no private chat exists, create one
+                return createPrivateChat(userId1, userId2);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Return -1 if an error occurs
+    }
+
+    private int createPrivateChat(int userId1, int userId2) {
+        try {
+            int chatId = databaseManager.createChat("Private Chat", false);
+            databaseManager.addUserToChat(chatId, userId1);
+            databaseManager.addUserToChat(chatId, userId2);
+            return chatId;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Return -1 if an error occurs
+    }
+
+
+    private int getUserIdByDisplayName(String displayName) {
+        String query = "SELECT id FROM users WHERE display_name = ?";
+        try (Connection connection = databaseManager.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, displayName);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Return -1 if user not found
+    }
 
     @FXML
     private void handleAddChat() {
@@ -363,6 +430,43 @@ public class ChatController {
         }
     }
 
+    @FXML
+    private void handleUpdateProfile() {
+        // Fetch current profile information
+        String currentDisplayName = userDisplayName.getText();
+        String currentImageUrl = ""; // You can fetch the current image URL from your data model
+
+        ProfileDialog dialog = new ProfileDialog(currentDisplayName, currentImageUrl);
+        Optional<Pair<String, String>> result = dialog.showAndWait();
+
+        result.ifPresent(pair -> {
+            String newDisplayName = pair.getKey();
+            String newImageUrl = pair.getValue();
+
+            // Update the profile in the database
+            updateUserProfile(currentUserId, newDisplayName, newImageUrl);
+
+            // Update the UI
+            userDisplayName.setText(newDisplayName);
+            if (newImageUrl != null && !newImageUrl.isEmpty()) {
+                Image image = new Image(newImageUrl);
+                userImageView.setImage(image);
+            }
+        });
+    }
+
+    private void updateUserProfile(int userId, String displayName, String imageUrl) {
+        String query = "UPDATE users SET display_name = ?, image_url = ? WHERE id = ?";
+        try (Connection connection = databaseManager.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, displayName);
+            stmt.setString(2, imageUrl);
+            stmt.setInt(3, userId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void onMessageReceived(String message) {
         Platform.runLater(() -> {

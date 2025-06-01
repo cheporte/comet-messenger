@@ -13,7 +13,7 @@
             <VBox spacing="10" alignment="CENTER">
                 <ListView fx:id="contactListView" styleClass="list-view"/>
                 <HBox spacing="10" alignment="CENTER">
-                    <Button text="Add Contact" onAction="#handleAddContact" styleClass="button" />
+                    <Button mnemonicParsing="false" onAction="#handleAddContact" styleClass="button" text="Add Contact"/>
                 </HBox>
             </VBox>
             <VBox spacing="10" alignment="CENTER">
@@ -24,8 +24,9 @@
                 </HBox>
             </VBox>
             <HBox spacing="10" alignment="CENTER">
-                <ImageView fx:id="userImageView" fitHeight="50" fitWidth="50" />
+                <ImageView fx:id="userImageView" fitHeight="50" fitWidth="50" styleClass="profile-avatar" />
                 <Label fx:id="userDisplayName" styleClass="user-display-name" text="Another User"/>
+                <Button mnemonicParsing="false" onAction="#handleUpdateProfile" styleClass="button" text="Update Profile"/>
             </HBox>
         </VBox>
     </left>
@@ -40,16 +41,19 @@
         </VBox>
     </top>
     <center>
-        <TextArea fx:id="chatArea" editable="false" wrapText="true" styleClass="chat-field">
-            <BorderPane.margin>
-                <Insets top="10" right="10" bottom="10" left="10" />
-            </BorderPane.margin>
-        </TextArea>
+        <VBox spacing="10" alignment="CENTER" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="10" />
+            </padding>
+            <TextArea fx:id="chatArea" editable="false" wrapText="true" styleClass="chat-field" VBox.vgrow="ALWAYS">
+                <VBox.margin>
+                    <Insets bottom="10" />
+                </VBox.margin>
+            </TextArea>
+            <HBox spacing="10">
+                <TextField fx:id="messageField" HBox.hgrow="ALWAYS" styleClass="text-field" />
+                <Button text="Send" onAction="#handleSend" styleClass="button" />
+            </HBox>
+        </VBox>
     </center>
-    <bottom>
-        <HBox spacing="10">
-            <TextField fx:id="messageField" HBox.hgrow="ALWAYS" styleClass="text-field" />
-            <Button text="Send" onAction="#handleSend" styleClass="button" />
-        </HBox>
-    </bottom>
 </BorderPane>

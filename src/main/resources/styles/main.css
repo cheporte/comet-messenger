@@ -135,3 +135,10 @@
     -fx-text-fill: #ffffff;
     -fx-font-weight: bold;
 }
+
+
+.profile-avatar {
+    -fx-background-radius: 25;
+    -fx-border: 2;
+    -fx-border-color: #7a8bc7;
+}
