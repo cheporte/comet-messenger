@@ -8,6 +8,7 @@
           AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0">
         <Label styleClass="welcome-label" text="🌟 Create your Comet Account 🌟" style="-fx-font-size: 18;"/>
         <TextField fx:id="usernameField" promptText="Username" maxWidth="200" styleClass="text-field"/>
+        <TextField fx:id="displayNameField" promptText="Display Username" maxWidth="200" styleClass="text-field"/>
         <PasswordField fx:id="passwordField" promptText="Password" maxWidth="200" styleClass="text-field"/>
         <HBox spacing="10" alignment="CENTER">
             <Button text="Sign Up" fx:id="signupButton" styleClass="button"/>

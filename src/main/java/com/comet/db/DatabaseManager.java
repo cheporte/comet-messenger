@@ -113,11 +113,12 @@ public class DatabaseManager {
         }
     }
 
-    public boolean createUser(String username, String password) {
-        String insert = "INSERT INTO users (username, password) VALUES (?, ?)";
+    public boolean createUser(String username, String displayName, String password) {
+        String insert = "INSERT INTO users (username, display_name, password) VALUES (?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(insert)) {
             stmt.setString(1, username);
-            stmt.setString(2, password); // hash later!
+            stmt.setString(2, displayName);
+            stmt.setString(3, password); // hash later!
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {

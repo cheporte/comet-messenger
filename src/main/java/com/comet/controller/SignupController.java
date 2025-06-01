@@ -16,6 +16,9 @@ public class SignupController {
     private TextField usernameField;
 
     @FXML
+    private TextField displayNameField;
+
+    @FXML
     private PasswordField passwordField;
 
     @FXML
@@ -32,6 +35,7 @@ public class SignupController {
 
     private void handleSignup(ActionEvent event) {
         String username = usernameField.getText().trim();
+        String displayName = displayNameField.getText().trim();
         String password = passwordField.getText().trim();
 
         if (username.isEmpty() || password.isEmpty()) {
@@ -39,7 +43,7 @@ public class SignupController {
             return;
         }
 
-        boolean success = DatabaseManager.getInstance().createUser(username, password);
+        boolean success = DatabaseManager.getInstance().createUser(username, displayName, password);
         if (success) {
             System.out.println("User created successfully");
             LoginController.showChatScreen(username, password);
