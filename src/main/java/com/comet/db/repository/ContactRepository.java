@@ -14,6 +14,10 @@ public class ContactRepository {
     
     private final Connection connection;
 
+    /**
+     * Default constructor that initializes the ContactRepository with a database connection
+     * from the DatabaseManager singleton. Throws a RuntimeException if the connection fails.
+     */
     public ContactRepository() {
         try {
             this.connection = DatabaseManager.getInstance().getConnection();
@@ -75,6 +79,12 @@ public class ContactRepository {
         return contacts;
     }
 
+    /**
+     * Retrieves a list of contact display names for the specified user.
+     *
+     * @param userId the ID of the user whose contact names are to be retrieved
+     * @return a list of contact display names
+     */
     public List<String> getContactNamesForUser(int userId) {
         List<String> contacts = new ArrayList<>();
         String query = "SELECT u.display_name FROM contacts c JOIN users u ON c.contact_id = u.id WHERE c.user_id = ?";

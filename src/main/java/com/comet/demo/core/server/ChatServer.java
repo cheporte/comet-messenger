@@ -1,8 +1,11 @@
 package com.comet.demo.core.server;
 
+import com.comet.db.schema.SchemaInitializer;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +14,13 @@ public class ChatServer {
     private ChatWebSocketServer webSocketServer;
     private static final List<ClientHandler> clientHandlers = new ArrayList<>();
 
+    /**
+     * Starts the chat server and WebSocket server on the specified ports.
+     * Accepts incoming client connections and starts a handler thread for each client.
+     *
+     * @param port the port for the main chat server
+     * @param webSocketPort the port for the WebSocket server
+     */
     private void start(int port, int webSocketPort) {
         try {
             serverSocket = new ServerSocket(port);
@@ -40,6 +50,9 @@ public class ChatServer {
         }
     }
 
+    /**
+     * Stops the chat server and WebSocket server, closing all resources.
+     */
     public void stop() {
         try {
             if (serverSocket != null) {
@@ -55,8 +68,14 @@ public class ChatServer {
         }
     }
 
-    public static void main(String[] args) {
+    /**
+     * Main entry point for the chat server application.
+     *
+     * @param args command-line arguments (not used)
+     */
+    public static void main(String[] args) throws SQLException {
         ChatServer server = new ChatServer();
+        SchemaInitializer.init();
         server.start(12345, 8887);
     }
 }

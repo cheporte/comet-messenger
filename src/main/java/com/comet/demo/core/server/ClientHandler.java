@@ -25,6 +25,14 @@ public class ClientHandler implements Runnable {
 
     private final UserRepository userRepository;
 
+    /**
+     * Constructs a ClientHandler for the given client socket and list of handlers.
+     * Initializes input/output streams and the user repository.
+     *
+     * @param clientSocket the socket for the connected client
+     * @param clientHandlers the list of all connected client handlers
+     * @throws IOException if an I/O error occurs or database connection fails
+     */
     public ClientHandler(Socket clientSocket, List<ClientHandler> clientHandlers) throws IOException {
         try {
             this.clientSocket = clientSocket;
@@ -41,6 +49,10 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Handles the client connection: authenticates, listens for messages, and manages disconnection.
+     * Broadcasts messages to all connected clients.
+     */
     @Override
     public void run() {
         try {
@@ -99,6 +111,14 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Broadcasts a message to all connected clients.
+     * Optionally includes the sender in the broadcast.
+     * Stores the message in the message history.
+     *
+     * @param message the message to broadcast
+     * @param includeSelf true to include the sender, false to exclude
+     */
     private void broadcastMessage(String message, boolean includeSelf) {
         synchronized (clientHandlers) {
             for (ClientHandler handler : clientHandlers) {

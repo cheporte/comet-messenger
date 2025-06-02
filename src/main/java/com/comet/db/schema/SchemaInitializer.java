@@ -1,7 +1,6 @@
 package com.comet.db.schema;
 
 import com.comet.db.DatabaseManager;
-import com.comet.demo.core.client.ChatClient;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -11,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SchemaInitializer {
-    private static final Logger logger = Logger.getLogger(ChatClient.class.getName());
+    private static final Logger logger = Logger.getLogger(SchemaInitializer.class.getName());
 
     public static void init() throws SQLException {
         Connection connection = DatabaseManager.getInstance().getConnection();

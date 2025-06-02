@@ -14,6 +14,10 @@ public class ChatRepository {
 
     private final Connection connection;
 
+    /**
+     * Default constructor that initializes the ChatRepository with a database connection
+     * from the DatabaseManager singleton. Throws a RuntimeException if the connection fails.
+     */
     public ChatRepository() {
         try {
             this.connection = DatabaseManager.getInstance().getConnection();
@@ -59,6 +63,12 @@ public class ChatRepository {
         }
     }
 
+    /**
+     * Retrieves the list of chat names for a given user.
+     *
+     * @param userId the ID of the user
+     * @return a list of chat names the user is a member of
+     */
     public List<String> getChatsForUser(int userId) {
         List<String> chats = new ArrayList<>();
         String query = "SELECT c.name FROM chats c JOIN chat_members cm ON c.id = cm.chat_id WHERE cm.user_id = ?";
@@ -79,6 +89,12 @@ public class ChatRepository {
         return chats;
     }
 
+    /**
+     * Retrieves the chat ID for a given chat name.
+     *
+     * @param chatName the name of the chat
+     * @return the chat ID if found, or -1 if not found or an error occurs
+     */
     public int getChatId(String chatName) {
         String query = "SELECT id FROM chats WHERE name = ?";
         
@@ -98,6 +114,13 @@ public class ChatRepository {
         return -1; // Return -1 or handle error appropriately
     }
 
+    /**
+     * Retrieves the private chat ID for two users, or creates one if it does not exist.
+     *
+     * @param userId1 the ID of the first user
+     * @param userId2 the ID of the second user
+     * @return the private chat ID if found or created, or -1 if an error occurs
+     */
     public int getPrivateChatId(int userId1, int userId2) {
         String query = "SELECT id FROM chats WHERE is_group = FALSE AND id IN " +
                 "(SELECT chat_id FROM chat_members WHERE user_id = ?) AND id IN " +
@@ -124,6 +147,13 @@ public class ChatRepository {
         return -1; // Return -1 if an error occurs
     }
 
+    /**
+     * Creates a private chat for two users and adds them as members.
+     *
+     * @param userId1 the ID of the first user
+     * @param userId2 the ID of the second user
+     * @return the chat ID if created successfully, or -1 if an error occurs
+     */
     private int createPrivateChat(int userId1, int userId2) {
         try {
             int chatId = createChat("Private Chat", false);

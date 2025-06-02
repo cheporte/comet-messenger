@@ -55,11 +55,6 @@ public class App extends Application {
         }
     }
 
-    public static void main(String[] args) {
-        configureLogger();
-        launch(args);
-    }
-
     private static void configureLogger() {
         try {
             Logger rootLogger = Logger.getLogger("com.comet");
@@ -113,5 +108,10 @@ public class App extends Application {
             }
         });
         return fileHandler;
+    }
+
+        public static void main(String[] args) {
+        configureLogger();
+        launch(args);
     }
 }

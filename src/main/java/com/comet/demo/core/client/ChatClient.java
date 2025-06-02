@@ -22,6 +22,15 @@ public class ChatClient {
     private final String username;
     private final String password;
 
+    /**
+     * Constructs a ChatClient instance with the specified server address, port, username, password, and message handler.
+     *
+     * @param serverAddress the server address
+     * @param serverPort the server port
+     * @param username the username for authentication
+     * @param password the password for authentication
+     * @param messageHandler the handler for processing received messages
+     */
     public ChatClient(
             String serverAddress,
             int serverPort,
@@ -36,6 +45,9 @@ public class ChatClient {
         this.messageHandler = messageHandler;
     }
 
+    /**
+     * Starts the chat client by connecting to the server, sending credentials, and starting the listener thread.
+     */
     public void start() {
         try {
             socket = new Socket(serverAddress, serverPort);
@@ -60,6 +72,10 @@ public class ChatClient {
         }
     }
 
+    /**
+     * Listens for incoming messages from the server and passes them to the message handler.
+     * Closes the connection if an error occurs or the stream ends.
+     */
     private void listenForMessages() {
         try {
             String msg;
@@ -75,12 +91,20 @@ public class ChatClient {
         }
     }
 
+    /**
+     * Sends a message to the server, prefixed with the username.
+     *
+     * @param msg the message to send
+     */
     public void sendMessage(String msg) {
         if (out != null) {
             out.println(username + ": " + msg);
         }
     }
 
+    /**
+     * Closes the connection, streams, and listener thread, and logs the disconnection.
+     */
     public void close() {
         try {
             if (out != null) out.close();

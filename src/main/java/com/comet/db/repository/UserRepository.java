@@ -15,6 +15,10 @@ public class UserRepository {
 
     private final Connection connection;
 
+    /**
+     * Default constructor that initializes the UserRepository with a database connection
+     * from the DatabaseManager singleton. Throws a RuntimeException if the connection fails.
+     */
     public UserRepository() {
         try {
             this.connection = DatabaseManager.getInstance().getConnection();
@@ -113,6 +117,12 @@ public class UserRepository {
         return -1; // Return -1 or handle error appropriately
     }
 
+    /**
+     * Retrieves the user ID for the given display name.
+     *
+     * @param displayName the display name of the user
+     * @return the user ID if found, or -1 if not found
+     */
     public int getUserIdByDisplayName(String displayName) {
         String query = "SELECT id FROM users WHERE display_name = ?";
         try (
@@ -129,6 +139,12 @@ public class UserRepository {
         return -1; // Return -1 if user not found
     }
 
+    /**
+     * Retrieves the user ID for the given username.
+     *
+     * @param username the username of the user
+     * @return the user ID if found, or -1 if not found
+     */
     public int getUserIdByUsername(String username) {
         String query = "SELECT id FROM users WHERE username = ?";
         try (
@@ -147,6 +163,13 @@ public class UserRepository {
         return -1; // Return -1 if user not found
     }
 
+    /**
+     * Updates the user profile with the given display name and image URL for the specified user ID.
+     *
+     * @param userId the ID of the user to update
+     * @param displayName the new display name
+     * @param imageUrl the new image URL
+     */
     public void updateUserProfile(int userId, String displayName, String imageUrl) {
         String query = "UPDATE users SET display_name = ?, image_url = ? WHERE id = ?";
         try (

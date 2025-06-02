@@ -48,6 +48,12 @@ public class ChatController {
     private ChatRepository chatRepository;
     private ContactRepository contactRepository;
 
+    /**
+     * Sets the user credentials and initializes repositories and UI state for the chat controller.
+     *
+     * @param username the username of the user
+     * @param password the password of the user
+     */
     public void setUserCredentials(String username, String password) {
         this.username = username;
         this.password = password;
@@ -68,6 +74,9 @@ public class ChatController {
         loadUserProfile(currentUserId);
     }
 
+    /**
+     * Connects to the WebSocket server for real-time chat updates.
+     */
     private void connectWebSocket() {
         try {
             // Replace with your WebSocket server URL
@@ -110,12 +119,18 @@ public class ChatController {
         }
     }
 
+    /**
+     * Closes the WebSocket connection if it is open.
+     */
     public void close() {
         if (webSocketClient != null) {
             webSocketClient.close();
         }
     }
 
+    /**
+     * Initializes the ChatClient and connects to the WebSocket server.
+     */
     private void initializeChatClient() {
         if (username == null || username.isEmpty()) {
             username = "Anonymous :3"; // fallback if ever needed
@@ -131,6 +146,11 @@ public class ChatController {
         }
     }
 
+    /**
+     * Loads the user's profile information and updates the UI.
+     *
+     * @param userId the ID of the user whose profile is to be loaded
+     */
     private void loadUserProfile(int userId) {
         String query = "SELECT display_name, image_url FROM users WHERE id = ?";
         try (
@@ -152,6 +172,9 @@ public class ChatController {
         }
     }
 
+    /**
+     * Loads the list of chats for the current user and sets up the chat selection listener.
+     */
     private void loadChats() {
         List<String> chats = chatRepository.getChatsForUser(currentUserId);
         ObservableList<String> observableChats = FXCollections.observableArrayList(chats);
@@ -175,6 +198,9 @@ public class ChatController {
         });
     }
 
+    /**
+     * Loads the list of contacts for the current user and sets up the contact selection listener.
+     */
     private void loadContacts() {
         List<String> contacts = contactRepository.getContactNamesForUser(currentUserId);
         ObservableList<String> observableContacts = FXCollections.observableArrayList(contacts);
@@ -198,6 +224,9 @@ public class ChatController {
         });
     }
 
+    /**
+     * Handles the creation of a new chat and adds the current user to it.
+     */
     @FXML
     private void handleAddChat() {
         String newChatName = "New Chat " + (chatListView.getItems().size() + 1); // Simple naming for new chats
@@ -211,6 +240,11 @@ public class ChatController {
         }
     }
 
+    /**
+     * Loads the messages for the specified chat and displays them in the chat area.
+     *
+     * @param chatId the ID of the chat whose messages are to be loaded
+     */
     private void loadMessages(int chatId) {
         chatArea.clear();
         String query = "SELECT u.username, m.content FROM messages m JOIN users u ON m.sender_id = u.id WHERE chat_id = ? ORDER BY timestamp";
@@ -229,6 +263,9 @@ public class ChatController {
         }
     }
 
+    /**
+     * Handles adding a user to the currently selected chat.
+     */
     @FXML
     private void handleAddUser() {
         if (currentChatId == -1) {
@@ -257,6 +294,9 @@ public class ChatController {
         });
     }
 
+    /**
+     * Handles adding a contact for the current user.
+     */
     @FXML
     private void handleAddContact() {
         if (currentChatId == -1) {
@@ -285,6 +325,9 @@ public class ChatController {
         });
     }
 
+    /**
+     * Handles sending a message in the currently selected chat.
+     */
     @FXML
     private void handleSend() {
         String message = messageField.getText().trim();
@@ -295,6 +338,13 @@ public class ChatController {
         }
     }
 
+    /**
+     * Sends a message to the database for the specified chat and sender.
+     *
+     * @param chatId the ID of the chat
+     * @param senderId the ID of the sender
+     * @param content the content of the message
+     */
     private void sendMessage(int chatId, int senderId, String content) {
         String insert = "INSERT INTO messages (chat_id, sender_id, content) VALUES (?, ?, ?)";
         try (
@@ -315,6 +365,9 @@ public class ChatController {
         }
     }
 
+    /**
+     * Handles updating the user's profile information.
+     */
     @FXML
     private void handleUpdateProfile() {
         // Fetch current profile information
@@ -340,6 +393,11 @@ public class ChatController {
         });
     }
 
+    /**
+     * Callback for when a message is received from the chat client.
+     *
+     * @param message the message received
+     */
     private void onMessageReceived(String message) {
         Platform.runLater(() -> {
             chatArea.appendText(message + "\n");

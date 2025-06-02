@@ -535,3 +535,16 @@
 [2025-06-01 21:50:17] [INFO   ] [ChatRepo] Found chat ID: {0} for chat name: {1} 
 [2025-06-01 21:50:24] [INFO   ] Received message: cheporte: Heeeeeey! 
 [2025-06-01 21:50:31] [SEVERE ] Connection lost. 
+[2025-06-01 21:55:52] [INFO   ] Starting the application... 
+[2025-06-01 21:55:53] [INFO   ] Application started successfully. 
+[2025-06-01 21:56:03] [INFO   ] [UserRepo] Checking login for user: {0} 
+[2025-06-01 21:56:14] [INFO   ] [UserRepo] Checking login for user: {0} 
+[2025-06-01 21:56:14] [INFO   ] Connected to the server as cheporte 
+[2025-06-01 21:56:14] [INFO   ] [ChatRepo] Retrieving chats for user: {0} 
+[2025-06-01 21:56:14] [INFO   ] [ChatRepo] Found chat: {0} for user: {1} 
+[2025-06-01 21:56:14] [INFO   ] [ChatRepo] Found chat: {0} for user: {1} 
+[2025-06-01 21:56:14] [INFO   ] [ContactRepo] Retrieving contact names for user: {0} 
+[2025-06-01 21:56:14] [INFO   ] [ContactRepo] Found contact name: {0} for user: {1} 
+[2025-06-01 21:56:18] [INFO   ] [ChatRepo] Retrieving chat ID for chat name: {0} 
+[2025-06-01 21:56:18] [INFO   ] [ChatRepo] Found chat ID: {0} for chat name: {1} 
+[2025-06-01 21:56:56] [INFO   ] Received message: cherry: What's up there? 
