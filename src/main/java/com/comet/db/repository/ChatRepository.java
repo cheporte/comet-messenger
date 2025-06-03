@@ -220,9 +220,8 @@ public class ChatRepository {
      * @param chatId the ID of the chat
      * @param senderId the ID of the user sending the message
      * @param content the content of the message
-     * @throws SQLException if a database access error occurs
      */
-    public void sendMessage(int chatId, int senderId, String content) throws SQLException {
+    public void sendMessage(int chatId, int senderId, String content) {
         String insert = "INSERT INTO messages (chat_id, sender_id, content) VALUES (?, ?, ?)";
 
         logger.log(Level.INFO, "[ChatRepo] Sending message in chat: {0}, from user: {1}", new Object[]{chatId, senderId});
@@ -233,6 +232,8 @@ public class ChatRepository {
             stmt.executeUpdate();
 
             logger.log(Level.INFO, "[ChatRepo] Message sent in chat: {0}, from user: {1}", new Object[]{chatId, senderId});
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "[ChatRepo] Error sending message in chat: " + chatId + ", from user: " + senderId, e);
         }
     }
 
