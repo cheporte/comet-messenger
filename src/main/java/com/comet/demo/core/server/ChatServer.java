@@ -21,7 +21,7 @@ public class ChatServer {
      * @param port the port for the main chat server
      * @param webSocketPort the port for the WebSocket server
      */
-    private void start(int port, int webSocketPort) {
+    void start(int port, int webSocketPort) {
         try {
             serverSocket = new ServerSocket(port);
             System.out.println("[Server] Listening on port " + port + "...");

@@ -23,8 +23,7 @@
                     <Button text="Add User" onAction="#handleAddUser" styleClass="button" />
                 </HBox>
             </VBox>
-            <HBox spacing="10" alignment="CENTER">
-
+            <HBox spacing="10" alignment="CENTER" styleClass="profile-bar">
                 <ImageView fx:id="userImageView" fitHeight="50" fitWidth="50" styleClass="profile-avatar" />
                 <Label fx:id="userDisplayName" styleClass="user-display-name" text="Another User"/>
                 <Button mnemonicParsing="false" onAction="#handleUpdateProfile" styleClass="button" text="Update Profile"/>

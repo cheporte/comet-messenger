@@ -1,57 +1,88 @@
 .root {
     -fx-background-color: #0a0e2a; /* Dark blue background */
+    background-color: #0a0e2a;
 }
 
 .text-area {
     -fx-background-color: rgba(10, 14, 42, 0.7); /* Slightly transparent dark blue */
+    background-color: rgba(10, 14, 42, 0.7);
+
     -fx-text-fill: #ffffff; /* White text */
     -fx-font-size: 14px;
+    font-size: 14px;
+
     -fx-border-color: #7a8bc7; /* Light blue border */
-    -fx-border-radius: 6;
-    -fx-padding: 10;
+    border-color: #7a8bc7;
+    
+    -fx-border-radius: 6px;
+    border-radius: 6px;
+
+    -fx-padding: 10px;
+    padding: 10px;
 }
 
 .chat-title {
     -fx-text-fill: #ffffff;
-    -fx-font-size: 16;
+    -fx-font-size: 16px;
+    font-size: 16px;
 }
 
 .chat-field {
     -fx-background-color: rgb(10, 14, 42); /* Slightly transparent dark blue */
+    background-color: rgb(10, 14, 42);
+
     -fx-text-fill: #ffffff; /* White text */
     -fx-border-color: #7a8bc7; /* Light blue border */
-    /*-fx-border-radius: 6;*/
-    -fx-padding: 5 10;
+    border-color: #7a8bc7;
+
+    /*-fx-border-radius: 6px;*/
+    -fx-padding: 5px 10px;
+    padding: 5px 10px;
 }
 
 .chat-field .content {
     -fx-background-color: rgba(10, 14, 42, 0.7);
+    background-color: rgba(10, 14, 42, 0.7);
 }
 
 .text-field {
     -fx-background-color: rgba(10, 14, 42, 0.7); /* Slightly transparent dark blue */
+    background-color: rgba(10, 14, 42, 0.7);
+
     -fx-text-fill: #ffffff; /* White text */
     -fx-border-color: #7a8bc7; /* Light blue border */
-    -fx-border-radius: 6;
-    -fx-padding: 5 10;
+    border-color: #7a8bc7;
+    
+    -fx-border-radius: 6px;
+    border-radius: 6px;
+    
+    -fx-padding: 5px 10px;
+    padding: 5px 10px;
 }
 
 .button {
     -fx-background-color: #1a237e; /* Deep blue button */
+    background-color: #1a237e;
+
     -fx-text-fill: white;
     -fx-font-size: 14px;
-    -fx-background-radius: 10;
-    -fx-padding: 5 10;
+    font-size: 14px;
+
+    -fx-background-radius: 10px;
+    -fx-padding: 5px 10px;
+    padding: 5px 10px;
 }
 
 .button:hover {
     -fx-background-color: #303f9f; /* Slightly lighter blue on hover */
+    background-color: #303f9f;
 }
 
 /* Style for the scrollbar track */
 .text-area .scroll-bar:horizontal .track,
 .text-area .scroll-bar:vertical .track {
     -fx-background-color: #2a2a2a; /* Dark background for the track */
+    background-color: #2a2a2a;
     -fx-background-radius: 3px; /* Rounded corners for the track */
 }
 
@@ -59,6 +90,7 @@
 .text-area .scroll-bar:horizontal .thumb,
 .text-area .scroll-bar:vertical .thumb {
     -fx-background-color: #5a189a; /* Purple thumb */
+    background-color: #5a189a;
     -fx-background-radius: 5px; /* Rounded corners for the thumb */
 }
 
@@ -66,7 +98,9 @@
 .text-area .scroll-bar .increment-button,
 .text-area .scroll-bar .decrement-button {
     -fx-background-color: transparent; /* Transparent background for the buttons */
+    background-color: transparent;
     -fx-padding: 0.2em; /* Padding around the buttons */
+    padding: 0.2em;
 }
 
 /* Style for the arrow shape inside the buttons */
@@ -74,71 +108,119 @@
 .text-area .scroll-bar .decrement-arrow {
     -fx-shape: "M 0 0 L 5 5 L 10 0 Z"; /* Triangle shape for the arrow */
     -fx-background-color: #555; /* Color of the arrow */
+    background-color: #555;
 }
 
 /* Style for the scrollbar itself */
 .text-area .scroll-bar:vertical,
 .text-area .scroll-bar:horizontal {
     -fx-background-color: transparent; /* Transparent background for the scrollbar */
+    background-color: transparent;
 }
 
 .list-view {
     -fx-background-color: rgba(10, 14, 42, 0.7); /* Slightly transparent dark blue */
+    background-color: rgba(10, 14, 42, 0.7);
+
     -fx-text-fill: #ffffff; /* White text */
     -fx-font-size: 14px;
+    font-size: 14px;
+
     -fx-border-color: #7a8bc7; /* Light blue border */
-    -fx-border-radius: 6;
-    -fx-padding: 5;
+    border-color: #7a8bc7;
+
+    -fx-border-radius: 6px;
+    border-radius: 6px;
+
+    -fx-padding: 5px;
+    padding: 5px;
 }
 
 .list-view .list-cell {
     -fx-background-color: rgba(10, 14, 42, 0.7); /* Slightly transparent dark blue */
+    background-color: rgba(10, 14, 42, 0.7);
+
     -fx-text-fill: #ffffff; /* White text */
-    -fx-padding: 5;
+    -fx-padding: 5px;
+    padding: 5px;
 }
 
 .list-view .list-cell:selected {
     -fx-background-color: #5a189a; /* Purple background for selected items */
+    background-color: #5a189a;
     -fx-text-fill: #ffffff; /* White text for selected items */
 }
 
 .list-view:focused {
     -fx-border-color: #7a8bc7; /* Light blue border when focused */
-    -fx-border-width: 2;
+    border-color: #7a8bc7;
+    -fx-border-width: 2px;
+    border-width: 2px; /* Standard property for compatibility */
 }
 
 .list-view .scroll-bar:vertical .track,
 .list-view .scroll-bar:horizontal .track {
     -fx-background-color: #2a2a2a; /* Dark background for the scrollbar track */
+    background-color: #2a2a2a;
     -fx-background-radius: 3px; /* Rounded corners for the scrollbar track */
 }
 
 .list-view .scroll-bar:vertical .thumb,
 .list-view .scroll-bar:horizontal .thumb {
     -fx-background-color: #5a189a; /* Purple thumb */
+    background-color: #5a189a;
     -fx-background-radius: 5px; /* Rounded corners for the scrollbar thumb */
 }
 
 .list-view .scroll-bar .increment-button,
 .list-view .scroll-bar .decrement-button {
     -fx-background-color: transparent; /* Transparent background for the scrollbar buttons */
+    background-color: transparent;
     -fx-padding: 0.2em; /* Padding around the scrollbar buttons */
+    padding: 0.2em;
 }
 
 .list-view .scroll-bar .increment-arrow,
 .list-view .scroll-bar .decrement-arrow {
     -fx-shape: "M 0 0 L 5 5 L 10 0 Z"; /* Triangle shape for the scrollbar arrows */
     -fx-background-color: #555; /* Color of the scrollbar arrows */
+    background-color: #555;
+}
+
+.profile-bar {
+    -fx-background-color: rgba(90, 24, 154, 0.15); /* Subtle purple background */
+    background-color: rgba(90, 24, 154, 0.15);
+    -fx-background-radius: 12px;
+    border-radius: 12px;
+    -fx-padding: 10px 18px;
+    padding: 10px 18px;
+    -fx-spacing: 16px;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, #5a189a55, 8, 0.2, 0, 2);
+    box-shadow: 0 2px 8px #5a189a22;
+    -fx-border-color: #7a8bc7;
+    border-color: #7a8bc7;
+    -fx-border-width: 1.5px;
+    border-width: 1.5px;
+    -fx-border-radius: 12px;
+    border-radius: 12px;
+}
+
+.profile-avatar {
+    -fx-background-radius: 25px;
+    -fx-border-width: 2px;
+    border-width: 2px;
+    -fx-border-color: #7a8bc7;
+    border-color: #7a8bc7;
+    -fx-effect: dropshadow(gaussian, #7a8bc7aa, 6, 0.3, 0, 1);
 }
 
 .user-display-name {
     -fx-text-fill: #ffffff;
     -fx-font-weight: bold;
-}
-
-
-.profile-avatar {
-    -fx-background-radius: 25;
-    -fx-border: 2;
-    -fx-border-color: #7a8bc7;
+    font-weight: bold;
+    -fx-font-size: 16px;
+    font-size: 16px;
+    -fx-padding: 0 10px;
+    padding: 0 10px;
 }

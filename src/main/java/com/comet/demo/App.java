@@ -110,7 +110,7 @@ public class App extends Application {
         return fileHandler;
     }
 
-        public static void main(String[] args) {
+    public static void main(String[] args) {
         configureLogger();
         launch(args);
     }
