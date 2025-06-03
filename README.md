@@ -1,41 +1,118 @@
 # ☄️ Comet Messenger
 
 A cosmic journey through code and conversation.
-A minimal JavaFX chat messenger built from scratch with a server/client architecture and a sprinkle of celestial charm ✨
+A minimal, modern JavaFX chat messenger built from scratch with a server/client architecture and a sprinkle of celestial charm ✨
+
+---
 
 ## 💡 Features
 
-- 🌐 **TCP Server with Multi-Client Support**: A robust server that supports multiple clients simultaneously.
-- 🎮 **CLI-based Chat Client**: A command-line interface for sending and receiving messages.
-- 🪪 **Signup/Login via Embedded H2 Database**: Secure user authentication and registration system.
-- 🖼️ **JavaFX GUI**: A graphical user interface scaffolded for an enhanced user experience.
-- 📜 **Logging**: Comprehensive logging to track application events and debug issues.
+- 🌐 **Multi-Client TCP Server**: Robust server supporting multiple simultaneous clients.
+- 🖥️ **JavaFX GUI**: Clean, modern interface for seamless chat experiences.
+- 🪪 **User Authentication**: Secure signup/login with embedded Postgres database.
+- 🗂️ **Contacts & Chats**: Add contacts, create chats, and manage your conversations.
+- 💬 **Real-Time Messaging**: Instant message delivery with WebSocket support.
+- 🖼️ **Profile Management**: Update your display name and avatar.
+- 📜 **Comprehensive Logging**: Track application events and debug issues easily.
+- 🧪 **Unit Tests**: Core logic covered by JUnit tests.
+
+---
 
 ## 🚀 Tech Stack
 
-<p align="center">
-  <img src="https://skillicons.dev/icons?i=java,postgres" />
-</p>
+
+<div align="center">
+
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
+![JavaFX](https://img.shields.io/badge/javafx-%23FF0000.svg?style=for-the-badge&logo=javafx&logoColor=white)
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+![Maven](https://img.shields.io/badge/apachemaven-C71A36.svg?style=for-the-badge&logo=apachemaven&logoColor=white)
+
+</div>
+
+- **Java 21**
+- **JavaFX** (UI)
+- **Maven** (build tool)
+- **HikariCP** (connection pooling)
+- **Postgres** (database)
+- **JUnit** (testing)
+
+---
 
 ## 🛠️ Build & Run
 
-To build and run the Comet Messenger, use the following Maven command:
+### Prerequisites
 
-```bash
-# Run the app
-mvn clean javafx\:run
-run
+- Java 21 or newer
+- Maven
+
+### Run the App
+
+```powershell
+# Build and launch the JavaFX client
+mvn clean javafx:run
 ```
 
-### 📜 License
+### Run the Server
+
+```powershell
+# From the project root, run:
+mvn compile
+java -cp target/classes com.comet.demo.core.server.ChatServer
+```
+
+---
+
+## 🗺️ Project Structure
+
+```text
+comet-messenger/
+├── src/
+│   ├── main/
+│   │   ├── java/com/comet/
+│   │   │   ├── controller/
+│   │   │   ├── db/
+│   │   │   │   ├── repository/
+│   │   │   │   └── schema/
+│   │   │   ├── demo/
+│   │   │   │   ├── core/
+│   │   │   │   │   ├── client/
+│   │   │   │   │   └── server/
+│   │   │   │   └── App.java
+│   │   │   └── module-info.java
+│   │   └── resources/com/comet/...
+│   └── test/java/com/comet/...
+├── pom.xml
+└── README.md
+```
+
+---
+
+## 🧭 Roadmap
+
+- [x] Multi-client TCP server
+- [x] JavaFX GUI for chat
+- [x] User authentication (signup/login)
+- [x] Contact management
+- [x] Profile editing
+- [x] WebSocket integration
+- [x] Group chat support
+- [ ] File sharing
+- [ ] Emoji reactions
+- [ ] Mobile client (future)
+
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
+
+---
+
+## 📜 License
+
 Open Source vibes — MIT License
 
+---
+
 ✉️ Message across the stars. Let the code be poetry, and the chats be legends.
-
-### Key Updates:
-
-- **Features Section**: Added a description of the logging feature and clarified the current state of the JavaFX GUI.
-- **Roadmap Section**: Updated to reflect the current progress and future plans, including the completion of the JavaFX GUI for single chat.
-- **General Clarity**: Improved the overall clarity and readability of the README.
-
-This version of the README should give users and contributors a clear understanding of the project's current capabilities and future directions.
