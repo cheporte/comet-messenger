@@ -42,11 +42,17 @@ public class ChatController {
     @FXML private Label currentChatLabel;
 
     private int currentUserId;
-    private int currentChatId;
+    // private int currentChatId;
 
     private UserRepository userRepository;
     private ChatRepository chatRepository;
     private ContactRepository contactRepository;
+
+    // Track chat type for current selection
+    private enum ChatType { NONE, PRIVATE, GROUP }
+    private ChatType currentChatType = ChatType.NONE;
+    private int currentPrivateChatId = -1;
+    private int currentGroupChatId = -1;
 
     /**
      * Sets the user credentials and initializes repositories and UI state for the chat controller.
@@ -96,8 +102,11 @@ public class ChatController {
                         // Refresh chats or handle specific messages
                         if (message.equals("refresh_chats")) {
                             loadChats();
-                            if (currentChatId != -1) {
-                                loadMessages(currentChatId);
+                            // Reload messages for the currently selected chat type
+                            if (currentChatType == ChatType.PRIVATE && currentPrivateChatId != -1) {
+                                loadPrivateMessages(currentPrivateChatId);
+                            } else if (currentChatType == ChatType.GROUP && currentGroupChatId != -1) {
+                                loadGroupMessages(currentGroupChatId);
                             }
                         }
                     });
@@ -176,24 +185,36 @@ public class ChatController {
      * Loads the list of chats for the current user and sets up the chat selection listener.
      */
     private void loadChats() {
-        List<String> chats = chatRepository.getChatsForUser(currentUserId);
-        ObservableList<String> observableChats = FXCollections.observableArrayList(chats);
+        // Load group chats only
+        List<String> groupChats = new ArrayList<>();
+        try {
+            groupChats = chatRepository.getGroupChatsForUser(currentUserId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        ObservableList<String> observableChats = FXCollections.observableArrayList(groupChats);
         chatListView.setItems(observableChats);
-
-        // Clear the selection to avoid selecting the first chat by default
         chatListView.getSelectionModel().clearSelection();
-
-        // Set up the listener for chat selection
+        // Listener for group chat selection
         chatListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 currentChatLabel.setText(newValue);
-                currentChatId = chatRepository.getChatId(newValue);
-                loadMessages(currentChatId);
+                try {
+                    // Get group chat id by name (corrected)
+                    int groupId = chatRepository.getGroupChatIdByName(newValue);
+                    currentGroupChatId = groupId;
+                    currentPrivateChatId = -1;
+                    currentChatType = ChatType.GROUP;
+                    loadGroupMessages(currentGroupChatId);
+                    contactListView.getSelectionModel().clearSelection();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else {
-                // Clear the chat area if no chat is selected
                 currentChatLabel.setText("No chat selected");
                 chatArea.clear();
-                currentChatId = -1; // Reset currentChatId to indicate no chat is selected
+                currentGroupChatId = -1;
+                currentChatType = ChatType.NONE;
             }
         });
     }
@@ -205,23 +226,57 @@ public class ChatController {
         List<String> contacts = contactRepository.getContactNamesForUser(currentUserId);
         ObservableList<String> observableContacts = FXCollections.observableArrayList(contacts);
         contactListView.setItems(observableContacts);
-
-        // Set up the listener for contact selection
+        // Listener for private chat selection
         contactListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 currentChatLabel.setText("Chat with " + newValue);
                 int contactId = userRepository.getUserIdByDisplayName(newValue);
                 if (contactId != -1) {
-                    currentChatId = chatRepository.getPrivateChatId(currentUserId, contactId);
-                    loadMessages(currentChatId);
+                    try {
+                        int privateChatId = chatRepository.getPrivateChatId(currentUserId, contactId);
+                        if (privateChatId == -1) {
+                            privateChatId = chatRepository.createPrivateChat(currentUserId, contactId);
+                        }
+                        currentPrivateChatId = privateChatId;
+                        currentGroupChatId = -1;
+                        currentChatType = ChatType.PRIVATE;
+                        loadPrivateMessages(currentPrivateChatId);
+                        chatListView.getSelectionModel().clearSelection();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
             } else {
-                // Clear the chat area if no contact is selected
                 currentChatLabel.setText("No contact selected");
                 chatArea.clear();
-                currentChatId = -1; // Reset currentChatId to indicate no chat is selected
+                currentPrivateChatId = -1;
+                currentChatType = ChatType.NONE;
             }
         });
+    }
+
+    private void loadPrivateMessages(int privateChatId) {
+        chatArea.clear();
+        try {
+            List<String> messages = chatRepository.getPrivateMessages(privateChatId);
+            for (String msg : messages) {
+                chatArea.appendText(msg + "\n");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadGroupMessages(int groupChatId) {
+        chatArea.clear();
+        try {
+            List<String> messages = chatRepository.getGroupMessages(groupChatId);
+            for (String msg : messages) {
+                chatArea.appendText(msg + "\n");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -229,65 +284,18 @@ public class ChatController {
      */
     @FXML
     private void handleAddChat() {
-        String newChatName = "New Chat " + (chatListView.getItems().size() + 1); // Simple naming for new chats
-        try {
-            int newChatId = chatRepository.createChat(newChatName, false);
-            chatRepository.addUserToChat(newChatId, currentUserId);
-            loadChats(); // Refresh the list of chats
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("Failed to create new chat: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Loads the messages for the specified chat and displays them in the chat area.
-     *
-     * @param chatId the ID of the chat whose messages are to be loaded
-     */
-    private void loadMessages(int chatId) {
-        chatArea.clear();
-        String query = "SELECT u.username, m.content FROM messages m JOIN users u ON m.sender_id = u.id WHERE chat_id = ? ORDER BY timestamp";
-        try (
-            Connection connection = DatabaseManager.getInstance().getConnection();
-            PreparedStatement stmt = connection.prepareStatement(query)
-        ) {
-            stmt.setInt(1, chatId);
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                chatArea.appendText(rs.getString("username") + ": " + rs.getString("content") + "\n");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Handles adding a user to the currently selected chat.
-     */
-    @FXML
-    private void handleAddUser() {
-        if (currentChatId == -1) {
-            System.err.println("No chat selected.");
-            return;
-        }
-
         TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Add User to Chat");
-        dialog.setHeaderText("Enter the username of the user to add to the chat:");
-        dialog.setContentText("Username:");
-
+        dialog.setTitle("Create Group Chat");
+        dialog.setHeaderText("Enter a name for the new group chat:");
+        dialog.setContentText("Group Name:");
         Optional<String> result = dialog.showAndWait();
-        result.ifPresent(username -> {
+        result.ifPresent(groupName -> {
             try {
-                int userId = userRepository.getUserIdByUsername(username);
-                if (userId != -1) {
-                    chatRepository.addUserToChat(currentChatId, userId);
-                    System.out.println("User added to chat successfully.");
-                } else {
-                    System.err.println("User not found.");
-                }
+                int groupId = chatRepository.createGroupChat(groupName, currentUserId);
+                chatRepository.addUserToGroup(groupId, currentUserId);
+                webSocketClient.send("refresh_chats");
+                loadChats();
+                chatListView.getSelectionModel().select(groupName);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -295,27 +303,25 @@ public class ChatController {
     }
 
     /**
-     * Handles adding a contact for the current user.
+     * Handles adding a user to the currently selected chat.
      */
     @FXML
-    private void handleAddContact() {
-        if (currentChatId == -1) {
-            System.err.println("No chat selected.");
+    private void handleAddUser() {
+        if (currentChatType != ChatType.GROUP || currentGroupChatId == -1) {
+            System.err.println("No group chat selected.");
             return;
         }
-
         TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Add Contact");
-        dialog.setHeaderText("Enter the username of the user to add your contacts:");
+        dialog.setTitle("Add User to Group Chat");
+        dialog.setHeaderText("Enter the username of the user to add:");
         dialog.setContentText("Username:");
-
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(username -> {
             try {
                 int userId = userRepository.getUserIdByUsername(username);
                 if (userId != -1) {
-                    contactRepository.addContact(currentUserId, userId);
-                    System.out.println("Contact saved successfully.");
+                    chatRepository.addUserToGroup(currentGroupChatId, userId);
+                    System.out.println("User added to group chat successfully.");
                 } else {
                     System.err.println("User not found.");
                 }
@@ -331,37 +337,22 @@ public class ChatController {
     @FXML
     private void handleSend() {
         String message = messageField.getText().trim();
-        if (!message.isEmpty() && currentChatId != -1) {
-            sendMessage(currentChatId, currentUserId, message);
-            chatClient.sendMessage(message);
-            messageField.clear();
-        }
-    }
-
-    /**
-     * Sends a message to the database for the specified chat and sender.
-     *
-     * @param chatId the ID of the chat
-     * @param senderId the ID of the sender
-     * @param content the content of the message
-     */
-    private void sendMessage(int chatId, int senderId, String content) {
-        String insert = "INSERT INTO messages (chat_id, sender_id, content) VALUES (?, ?, ?)";
-        try (
-            Connection connection = DatabaseManager.getInstance().getConnection();
-            PreparedStatement stmt = connection.prepareStatement(insert)
-        ) {
-            stmt.setInt(1, chatId);
-            stmt.setInt(2, senderId);
-            stmt.setString(3, content);
-            stmt.executeUpdate();
-
-            // Append the message directly to the chatArea
-            Platform.runLater(() -> {
-                chatArea.setScrollTop(Double.MAX_VALUE);
-            });
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (!message.isEmpty()) {
+            try {
+                if (currentChatType == ChatType.PRIVATE && currentPrivateChatId != -1) {
+                    chatRepository.sendPrivateMessage(currentPrivateChatId, currentUserId, message);
+                    chatClient.sendMessage(message);
+                } else if (currentChatType == ChatType.GROUP && currentGroupChatId != -1) {
+                    chatRepository.sendGroupMessage(currentGroupChatId, currentUserId, message);
+                    loadGroupMessages(currentGroupChatId);
+                } else {
+                    System.err.println("No chat selected.");
+                    return;
+                }
+                messageField.clear();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -389,6 +380,32 @@ public class ChatController {
             if (newImageUrl != null && !newImageUrl.isEmpty()) {
                 Image image = new Image(newImageUrl);
                 userImageView.setImage(image);
+            }
+        });
+    }
+
+    /**
+     * Handles adding a contact for the current user.
+     */
+    @FXML
+    private void handleAddContact() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Add Contact");
+        dialog.setHeaderText("Enter the username of the user to add as a contact:");
+        dialog.setContentText("Username:");
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(username -> {
+            try {
+                int userId = userRepository.getUserIdByUsername(username);
+                if (userId != -1) {
+                    contactRepository.addContact(currentUserId, userId);
+                    loadContacts();
+                    System.out.println("Contact added successfully.");
+                } else {
+                    System.err.println("User not found.");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         });
     }
