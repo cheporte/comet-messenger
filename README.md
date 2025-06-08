@@ -46,21 +46,6 @@ A minimal, modern JavaFX chat messenger built from scratch with a server/client 
 - Java 21 or newer
 - Maven
 
-### Run the App
-
-```powershell
-# Build and launch the JavaFX client
-mvn clean javafx:run
-```
-
-### Run the Server
-
-```powershell
-# From the project root, run:
-mvn compile
-java -cp target/classes com.comet.demo.core.server.ChatServer
-```
-
 ---
 
 ## 🗺️ Project Structure
@@ -97,11 +82,20 @@ comet-messenger/
 - [x] Profile editing
 - [x] WebSocket integration
 - [x] Group chat support
+- [ ] Message status (sent, delievered, read)
 - [ ] File sharing
 - [ ] Emoji reactions
 - [ ] Mobile client (future)
 
+And massive refactoring as well. Such bloated codebase is impossible to scale, so I'll definitely have to update it and split into mane smaller files for proper management and future scalability purposes.
+
 ---
+
+## (T^T) Known Issues
+
+- [ ] When firstly selecting a group chat, it appears empty. Messages appear after second selection of that chat.
+- [ ] I suck at writing tests for such kind of anapp :_)
+- [ ] Message notifications work only in private chats. User PFP is not loaded to the notification tray
 
 ## 🤝 Contributing
 
