@@ -463,13 +463,43 @@ public class ChatController {
         Platform.runLater(() -> {
             chatArea.appendText(message + "\n");
             chatArea.setScrollTop(Double.MAX_VALUE);
-       
-            String chat = currentChatLabel.getText();
+
             String sender = message.contains(":") ? message.substring(0, message.indexOf(":")) : "";
             String msg = message.contains(":") ? message.substring(message.indexOf(":") + 1).trim() : message;
 
-            // Show JavaFX notification
-            Notifications.create().title(chat).text(sender + ": " + msg).showInformation();
+            // Only show notification for incoming messages (not sent by current user)
+            if (!sender.equals(username)) {
+                // Fetch sender's image_url from the database
+                String imageUrl = null;
+                try {
+                    int senderId = userRepository.getUserIdByDisplayName(sender);
+                    if (senderId != -1) {
+                        imageUrl = userRepository.getUserImageUrl(senderId);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                ImageView icon = null;
+                if (imageUrl != null && !imageUrl.isEmpty()) {
+                    try {
+                        Image img = new Image(imageUrl, 32, 32, true, true);
+                        icon = new ImageView(img);
+                    } catch (Exception e) {
+                        System.err.println("Failed to load image for notification icon: " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+                Notifications notification = Notifications.create()
+                    .title("New message")
+                    .text(sender + ": " + msg)
+                    .hideAfter(javafx.util.Duration.seconds(4))
+                    .position(javafx.geometry.Pos.TOP_RIGHT)
+                    .darkStyle();
+                if (icon != null) {
+                    notification.graphic(icon);
+                }
+                notification.showInformation();
+            }
         });
     }
 }

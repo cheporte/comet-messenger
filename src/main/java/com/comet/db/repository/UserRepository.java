@@ -185,4 +185,26 @@ public class UserRepository {
             logger.log(Level.SEVERE, "[UserRepo] Error updating user profile for user ID: " + userId, e);
         }
     }
+
+    /**
+     * Retrieves the image URL for the given user ID.
+     *
+     * @param userId the ID of the user
+     * @return the image URL if found, or null if not found or error
+     */
+    public String getUserImageUrl(int userId) {
+        String query = "SELECT image_url FROM users WHERE id = ?";
+        try (
+            PreparedStatement stmt = connection.prepareStatement(query)
+        ) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("image_url");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
