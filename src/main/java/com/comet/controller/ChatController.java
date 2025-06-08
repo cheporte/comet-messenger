@@ -1,5 +1,7 @@
 package com.comet.controller;
 
+import org.controlsfx.control.Notifications;
+
 import com.comet.db.DatabaseManager;
 import com.comet.db.repository.ChatRepository;
 import com.comet.db.repository.ContactRepository;
@@ -102,12 +104,16 @@ public class ChatController {
                         // Refresh chats or handle specific messages
                         if (message.equals("refresh_chats")) {
                             loadChats();
-                            // Reload messages for the currently selected chat type
-                            if (currentChatType == ChatType.PRIVATE && currentPrivateChatId != -1) {
-                                loadPrivateMessages(currentPrivateChatId);
-                            } else if (currentChatType == ChatType.GROUP && currentGroupChatId != -1) {
+                            // If a group chat is open, reload its messages
+                            if (currentChatType == ChatType.GROUP && currentGroupChatId != -1) {
                                 loadGroupMessages(currentGroupChatId);
                             }
+                            // If a private chat is open, reload its messages
+                            if (currentChatType == ChatType.PRIVATE && currentPrivateChatId != -1) {
+                                loadPrivateMessages(currentPrivateChatId);
+                            }
+                        } else if (message.equals("refresh_contacts")) {
+                            loadContacts();
                         }
                     });
                 }
@@ -200,12 +206,12 @@ public class ChatController {
             if (newValue != null) {
                 currentChatLabel.setText(newValue);
                 try {
-                    // Get group chat id by name (corrected)
                     int groupId = chatRepository.getGroupChatIdByName(newValue);
                     currentGroupChatId = groupId;
                     currentPrivateChatId = -1;
                     currentChatType = ChatType.GROUP;
                     loadGroupMessages(currentGroupChatId);
+                    // Deselect contact list to allow switching back to contacts
                     contactListView.getSelectionModel().clearSelection();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -214,6 +220,35 @@ public class ChatController {
                 currentChatLabel.setText("No chat selected");
                 chatArea.clear();
                 currentGroupChatId = -1;
+                currentChatType = ChatType.NONE;
+            }
+        });
+
+        // Listener for private chat selection
+        contactListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                currentChatLabel.setText("Chat with " + newValue);
+                int contactId = userRepository.getUserIdByDisplayName(newValue);
+                if (contactId != -1) {
+                    try {
+                        int privateChatId = chatRepository.getPrivateChatId(currentUserId, contactId);
+                        if (privateChatId == -1) {
+                            privateChatId = chatRepository.createPrivateChat(currentUserId, contactId);
+                        }
+                        currentPrivateChatId = privateChatId;
+                        currentGroupChatId = -1;
+                        currentChatType = ChatType.PRIVATE;
+                        loadPrivateMessages(currentPrivateChatId);
+                        // Deselect group chat to allow switching back to groups
+                        chatListView.getSelectionModel().clearSelection();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else {
+                currentChatLabel.setText("No contact selected");
+                chatArea.clear();
+                currentPrivateChatId = -1;
                 currentChatType = ChatType.NONE;
             }
         });
@@ -241,6 +276,7 @@ public class ChatController {
                         currentGroupChatId = -1;
                         currentChatType = ChatType.PRIVATE;
                         loadPrivateMessages(currentPrivateChatId);
+                        // Deselect group chat to allow switching back to groups
                         chatListView.getSelectionModel().clearSelection();
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -322,6 +358,10 @@ public class ChatController {
                 if (userId != -1) {
                     chatRepository.addUserToGroup(currentGroupChatId, userId);
                     System.out.println("User added to group chat successfully.");
+                    // Notify all clients to refresh chats
+                    if (webSocketClient != null && webSocketClient.isOpen()) {
+                        webSocketClient.send("refresh_chats");
+                    }
                 } else {
                     System.err.println("User not found.");
                 }
@@ -401,6 +441,10 @@ public class ChatController {
                     contactRepository.addContact(currentUserId, userId);
                     loadContacts();
                     System.out.println("Contact added successfully.");
+                    // Notify all clients to refresh contacts
+                    if (webSocketClient != null && webSocketClient.isOpen()) {
+                        webSocketClient.send("refresh_contacts");
+                    }
                 } else {
                     System.err.println("User not found.");
                 }
@@ -419,6 +463,13 @@ public class ChatController {
         Platform.runLater(() -> {
             chatArea.appendText(message + "\n");
             chatArea.setScrollTop(Double.MAX_VALUE);
+       
+            String chat = currentChatLabel.getText();
+            String sender = message.contains(":") ? message.substring(0, message.indexOf(":")) : "";
+            String msg = message.contains(":") ? message.substring(message.indexOf(":") + 1).trim() : message;
+
+            // Show JavaFX notification
+            Notifications.create().title(chat).text(sender + ": " + msg).showInformation();
         });
     }
 }

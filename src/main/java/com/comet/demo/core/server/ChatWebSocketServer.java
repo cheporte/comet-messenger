@@ -30,7 +30,11 @@ public class ChatWebSocketServer extends WebSocketServer {
     public void onMessage(WebSocket conn, String message) {
         System.out.println("Received message: " + message);
         // Handle incoming messages, e.g., broadcast to all clients
-        broadcast("refresh_chats");
+        if ("refresh_contacts".equals(message)) {
+            broadcast("refresh_contacts");
+        } else {
+            broadcast("refresh_chats");
+        }
     }
 
     @Override
