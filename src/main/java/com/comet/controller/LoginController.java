@@ -16,15 +16,14 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class LoginController {
-    private UserRepository userRepository;
+    UserRepository userRepository;
 
-    @FXML private TextField usernameField;
-    @FXML private PasswordField passwordField;
-    @FXML private Button loginButton;
-    @FXML private Button signupRedirectButton;
+    @FXML TextField usernameField;
+    @FXML PasswordField passwordField;
+    @FXML Button loginButton;
+    @FXML Button signupRedirectButton;
 
-    @FXML
-    private void initialize() {
+    @FXML void initialize() {
         userRepository = new UserRepository();
 
         signupRedirectButton.setOnAction(this::handleSignupRedirect);
