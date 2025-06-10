@@ -7,6 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,6 +41,25 @@ public class UserRepository {
     }
 
     /**
+     * Hashes a password using SHA-256. In production, use bcrypt or Argon2 for better security.
+     */
+    private static String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hash = md.digest(password.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("SHA-256 not available", e);
+        }
+    }
+
+    /**
      * Checks if the provided username and password combination exists in the users table.
      *
      * @param username the username to check
@@ -50,7 +72,7 @@ public class UserRepository {
             PreparedStatement stmt = connection.prepareStatement(query)
         ) {
             stmt.setString(1, username);
-            stmt.setString(2, password); // ⚠️ hash later
+            stmt.setString(2, hashPassword(password)); // hash password
             ResultSet rs = stmt.executeQuery();
 
             logger.log(Level.INFO, "[UserRepo] Checking login for user: {0}", username);
@@ -77,7 +99,7 @@ public class UserRepository {
         ) {
             stmt.setString(1, username);
             stmt.setString(2, displayName);
-            stmt.setString(3, password);
+            stmt.setString(3, hashPassword(password)); // hash password
             stmt.executeUpdate();
 
             logger.log(Level.INFO, "[UserRepo] User created successfully: {0}", username);
@@ -106,7 +128,7 @@ public class UserRepository {
             PreparedStatement stmt = connection.prepareStatement(query)
         ) {
             stmt.setString(1, username);
-            stmt.setString(2, password);
+            stmt.setString(2, hashPassword(password)); // hash password
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 return rs.getInt("id");
@@ -171,13 +193,34 @@ public class UserRepository {
      * @param imageUrl the new image URL
      */
     public void updateUserProfile(int userId, String displayName, String imageUrl) {
+        // Fetch current values if fields are empty
+        String currentDisplayName = displayName;
+        String currentImageUrl = imageUrl;
+        if (displayName == null || displayName.isEmpty() || imageUrl == null || imageUrl.isEmpty()) {
+            String query = "SELECT display_name, image_url FROM users WHERE id = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(query)) {
+                stmt.setInt(1, userId);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    if (displayName == null || displayName.isEmpty()) {
+                        currentDisplayName = rs.getString("display_name");
+                    }
+                    if (imageUrl == null || imageUrl.isEmpty()) {
+                        currentImageUrl = rs.getString("image_url");
+                    }
+                }
+            } catch (SQLException e) {
+                logger.log(Level.SEVERE, "[UserRepo] Error fetching current user profile for user ID: " + userId, e);
+                return;
+            }
+        }
         String query = "UPDATE users SET display_name = ?, image_url = ? WHERE id = ?";
         try (
             PreparedStatement stmt = connection.prepareStatement(query)
         ) {
             logger.log(Level.INFO, "[UserRepo] Updating user profile for user ID: {0}", userId);
-            stmt.setString(1, displayName);
-            stmt.setString(2, imageUrl);
+            stmt.setString(1, currentDisplayName);
+            stmt.setString(2, currentImageUrl);
             stmt.setInt(3, userId);
             stmt.executeUpdate();
             logger.log(Level.INFO, "[UserRepo] User profile updated successfully for user ID: {0}", userId);

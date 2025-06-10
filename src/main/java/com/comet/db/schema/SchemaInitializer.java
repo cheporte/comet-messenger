@@ -21,7 +21,7 @@ public class SchemaInitializer {
             username VARCHAR(255) UNIQUE NOT NULL,
             password VARCHAR(255) NOT NULL,
             display_name VARCHAR(255) DEFAULT 'Another User',
-            image_url VARCHAR(255)
+            image_url VARCHAR(255) DEFAULT 'https://i.pinimg.com/736x/2a/9a/5c/2a9a5c93711c0c0e876483e542982a7e.jpg'
         )
         """;
 
