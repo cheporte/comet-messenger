@@ -1,36 +1,35 @@
 .root {
-    -fx-background-color: #0a0e2a; /* Dark blue background */
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #3D0D4A, #1B0A23);
 }
 
-.text-area {
-    -fx-background-color: rgba(10, 14, 42, 0.7); /* Slightly transparent dark blue */
-    -fx-text-fill: #ffffff; /* White text */
-    -fx-font-size: 14px;
-    -fx-border-color: #7a8bc7; /* Light blue border */
-    -fx-border-radius: 6;
-    -fx-padding: 10;
-}
+.text-field, .password-field {
+    -fx-background-color: rgba(255, 255, 255, 0.1); /* translucent white */
+    -fx-text-fill: #ffffff;
 
-.text-field {
-    -fx-background-color: rgba(10, 14, 42, 0.7); /* Slightly transparent dark blue */
-    -fx-text-fill: #ffffff; /* White text */
-    -fx-border-color: #7a8bc7; /* Light blue border */
-    -fx-border-radius: 6;
-    -fx-padding: 5 10;
+    -fx-border-color: linear-gradient(from 0% 0% to 100% 100%, #9E6ACD, #4E2683);
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+
+    -fx-padding: 10 15;
+    -fx-effect: dropshadow(gaussian, #9E6ACD88, 10, 0.3, 0, 1);
 }
 
 .button {
-    -fx-background-color: #1a237e; /* Deep blue button */
-    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #D18DFA, #8C3DF5);
+    -fx-text-fill: #ffffff;
     -fx-font-size: 14px;
-    -fx-background-radius: 10;
-    -fx-padding: 5 10;
+
+    -fx-background-radius: 12;
+    -fx-padding: 8 20;
+    -fx-effect: dropshadow(gaussian, #00000055, 6, 0.2, 0, 2);
 }
 
 .button:hover {
-    -fx-background-color: #303f9f; /* Slightly lighter blue on hover */
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #B670F5, #6622AA);
 }
 
 .welcome-label {
     -fx-text-fill: #ffffff;
+    -fx-font-size: 20px;
+    -fx-effect: dropshadow(gaussian, #E291FF88, 5, 0.2, 0, 1);
 }

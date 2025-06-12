@@ -41,6 +41,7 @@ public class LoginController {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.getScene().getStylesheets().add(App.class.getResource("/styles/main.css").toExternalForm());
+            stage.setFullScreen(true);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
