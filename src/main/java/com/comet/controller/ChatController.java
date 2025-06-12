@@ -455,6 +455,34 @@ public class ChatController {
     }
 
     /**
+     * Handles removing a contact for the current user.
+     */
+    @FXML
+    private void handleRemoveContact() {
+        String selectedContact = contactListView.getSelectionModel().getSelectedItem();
+        if (selectedContact == null) {
+            System.err.println("No contact selected.");
+            return;
+        }
+        int contactId = userRepository.getUserIdByDisplayName(selectedContact);
+        if (contactId == -1) {
+            System.err.println("Contact not found.");
+            return;
+        }
+        try {
+            contactRepository.removeContact(currentUserId, contactId);
+            loadContacts();
+            System.out.println("Contact removed successfully.");
+            // Notify all clients to refresh contacts
+            if (webSocketClient != null && webSocketClient.isOpen()) {
+                webSocketClient.send("refresh_contacts");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Callback for when a message is received from the chat client.
      *
      * @param message the message received

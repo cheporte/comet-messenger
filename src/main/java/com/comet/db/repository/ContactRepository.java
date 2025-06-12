@@ -55,6 +55,25 @@ public class ContactRepository {
     }
 
     /**
+     * Removes a contact for the specified user. Also removes the reciprocal contact if it exists.
+     *
+     * @param userId the ID of the user
+     * @param contactId the ID of the contact to remove
+     * @throws SQLException if a database access error occurs
+     */
+    public void removeContact(int userId, int contactId) throws SQLException {
+        String delete = "DELETE FROM contacts WHERE (user_id = ? AND contact_id = ?) OR (user_id = ? AND contact_id = ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(delete)) {
+            stmt.setInt(1, userId);
+            stmt.setInt(2, contactId);
+            stmt.setInt(3, contactId);
+            stmt.setInt(4, userId);
+            stmt.executeUpdate();
+            logger.log(Level.INFO, "[ContactRepo] Removed contact: {0} and reciprocal for user: {1}", new Object[]{contactId, userId});
+        }
+    }
+
+    /**
      * Retrieves a list of contact IDs for the specified user.
      *
      * @param userId the ID of the user whose contacts are to be retrieved

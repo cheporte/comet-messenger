@@ -14,6 +14,7 @@
                 <ListView fx:id="contactListView" styleClass="list-view"/>
                 <HBox spacing="10" alignment="CENTER">
                     <Button mnemonicParsing="false" onAction="#handleAddContact" styleClass="button" text="Add Contact"/>
+                    <Button mnemonicParsing="false" onAction="#handleRemoveContact" styleClass="button" text="Remove Contact"/>
                 </HBox>
             </VBox>
             <VBox spacing="10" alignment="CENTER">
